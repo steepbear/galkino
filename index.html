@@ -65,7 +65,7 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 </div>
 <svg id="eye" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 24Q24 1 45 24Q24 47 3 24Z" fill="#f8e5bb" stroke="#57351d" stroke-width="3"/><circle cx="24" cy="24" r="10" fill="#77a9a7" stroke="#57351d" stroke-width="2"/><circle cx="24" cy="24" r="5" fill="#2c302d"/><circle cx="21" cy="21" r="2.5" fill="white"/></svg>
 </div>
-<p class="note">На компьютере наведи курсор на Тимофея. На телефоне коснись его. Через секунду после ухода взгляда камень осторожно откроет глаза, посмотрит налево и направо — и только потом вернётся Тимофей.</p>
+<p class="note">На компьютере наведи курсор на Тимофея. На телефоне коснись его. Через секунду после ухода взгляда камень осторожно откроет глаза, посмотрит налево, направо и прямо — и только потом вернётся Тимофей.</p>
 <script>
 const scene=document.getElementById('scene'),person=document.getElementById('person'),eye=document.getElementById('eye');
 let timers=[];let isWatching=false;
@@ -77,8 +77,8 @@ function restore(){
   if(!person.classList.contains('changed'))return;
   later(()=>{if(!isWatching)person.classList.add('peeking','look-left')},1000);
   later(()=>{if(!isWatching){person.classList.remove('look-left');person.classList.add('look-right')}},1600);
-  later(()=>{if(!isWatching){person.classList.remove('look-right');person.classList.add('look-left')}},2200);
-  later(()=>{if(!isWatching)person.className=''},3000);
+  later(()=>{if(!isWatching)person.classList.remove('look-right')},2350);
+  later(()=>{if(!isWatching)person.className=''},2850);
 }
 scene.addEventListener('pointermove',e=>{if(e.pointerType==='mouse'){const r=scene.getBoundingClientRect();eye.style.left=(e.clientX-r.left)+'px';eye.style.top=(e.clientY-r.top)+'px'}});
 person.addEventListener('pointerenter',hide);
