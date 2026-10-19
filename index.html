@@ -1,30 +1,69 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Деревня Галькино</title>
-  <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background: #f4e3bd;
-      color: #57351e;
-      font-family: Georgia, serif;
-      text-align: center;
-    }
-    h1 { font-size: 42px; }
-    p { font-size: 20px; }
-  </style>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Галькино — первый дом</title>
+<style>
+:root{--ink:#56351d}*{box-sizing:border-box}body{margin:0;background:#e8d4a9;color:var(--ink);font-family:Georgia,serif;text-align:center}
+header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin:9px 0}
+.scene{position:relative;width:min(96vw,950px);margin:16px auto 12px;border:12px solid #b78a51;border-radius:26px;overflow:hidden;box-shadow:0 8px 30px #64401b45;cursor:none;background:#b7d5bf;touch-action:manipulation}
+.scene svg{display:block;width:100%;height:auto}
+#eye{position:absolute;left:0;top:0;pointer-events:none;transform:translate(-50%,-50%);width:45px;height:45px;display:none;filter:drop-shadow(1px 2px 2px #4b311b80);z-index:5}
+.scene:hover #eye{display:block}
+#person{position:absolute;left:57%;top:56%;width:18%;height:29%;cursor:none;transform:translate(-50%,-50%);user-select:none;-webkit-tap-highlight-color:transparent}
+#person svg{width:100%;height:100%;overflow:visible}
+#person .rock{opacity:0}#person.changed .alive{opacity:0}#person.changed .rock{opacity:1}
+#person .alive,#person .rock{transition:opacity .18s}
+.note{font-size:15px;padding:0 12px 24px}.scene:focus-visible{outline:3px solid #594024}
+@media(hover:none){.scene{cursor:default}#eye{display:none!important}}
+</style>
 </head>
 <body>
-  <h1>Деревня Галькино</h1>
-  <p>Маленькая деревня с большими историями.</p>
-  <p>Здесь скоро появятся наши жители!</p>
-</body>
-</html>
+<header><h1>Деревня Галькино</h1><p>Здесь живут необычные жители. Попробуй посмотреть на почтальона!</p></header>
+<div class="scene" id="scene" aria-label="Двор Тимофея Булыжникова">
+<svg viewBox="0 0 900 570" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<defs><pattern id="grass" width="55" height="48" patternUnits="userSpaceOnUse"><path d="M9 26l-3-8m3 8 5-9M38 41l-2-8m2 8 5-7" stroke="#63935f" stroke-width="2" fill="none" opacity=".45"/></pattern></defs>
+<rect width="900" height="570" fill="#b9d5b6"/><rect width="900" height="570" fill="url(#grass)"/>
+<path d="M0 495 Q260 410 420 510T900 480V570H0Z" fill="#d7ba88" stroke="#b89869" stroke-width="6"/>
+<path d="M270 315L450 95 650 315V440H270Z" fill="#f1d7a5" stroke="#80532e" stroke-width="9"/>
+<path d="M225 318L446 76 690 318 634 318 450 140 289 318Z" fill="#a34f34" stroke="#643823" stroke-width="9"/>
+<path d="M260 310L450 110 650 310" fill="none" stroke="#d18a56" stroke-width="7"/>
+<rect x="327" y="333" width="105" height="94" rx="6" fill="#88b5b2" stroke="#68462a" stroke-width="8"/>
+<path d="M380 333v94M327 379h105" stroke="#68462a" stroke-width="7"/>
+<rect x="490" y="326" width="85" height="114" rx="5" fill="#92613c" stroke="#65412c" stroke-width="8"/>
+<circle cx="555" cy="386" r="6" fill="#f4c879"/>
+<path d="M125 410v-75m0 25h105m-105 25h105M745 430v-105m0 30h105m-105 35h105" stroke="#7d5634" stroke-width="13" stroke-linecap="round"/>
+<path d="M80 420q-40-90 35-145q65 40 35 145Z" fill="#54834f"/><path d="M770 278q-85-105 0-170q80 65 0 170Z" fill="#608e56"/>
+<path d="M770 270v95" stroke="#795537" stroke-width="15"/>
+<path d="M60 500q45-90 90 0M730 500q45-95 100 0" fill="#7da968"/>
+<text x="450" y="42" text-anchor="middle" font-family="Georgia" font-size="27" fill="#5a371e">Дом почтальона</text>
+</svg>
+<div id="person" role="button" tabindex="0" aria-label="Тимофей Булыжников. Посмотри, как он превращается в камень.">
+<svg viewBox="0 0 160 180" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<g class="alive">
+<ellipse cx="80" cy="158" rx="62" ry="12" fill="#5c583e" opacity=".22"/>
+<path d="M22 140Q15 55 76 45Q143 39 140 140Q115 165 75 163Q40 164 22 140Z" fill="#85827a" stroke="#514d48" stroke-width="5"/>
+<path d="M40 58Q80 5 123 57L40 58" fill="#346982" stroke="#264c60" stroke-width="5"/>
+<rect x="32" y="52" width="102" height="13" rx="6" fill="#346982" stroke="#264c60" stroke-width="4"/>
+<circle cx="59" cy="96" r="7" fill="#2c2825"/><circle cx="103" cy="96" r="7" fill="#2c2825"/>
+<path d="M65 121Q80 134 97 119" stroke="#473b33" stroke-width="4" fill="none" stroke-linecap="round"/>
+<rect x="103" y="124" width="41" height="30" rx="5" fill="#ae7843" stroke="#684326" stroke-width="4"/>
+<path d="M105 125l18 15 18-15" stroke="#684326" stroke-width="3" fill="none"/>
+</g>
+<g class="rock"><ellipse cx="80" cy="155" rx="62" ry="12" fill="#5c583e" opacity=".22"/><path d="M18 139Q19 88 53 77Q90 56 119 82Q144 102 142 142Q103 166 49 157Z" fill="#86817a" stroke="#514d48" stroke-width="5"/><path d="M40 129l13-8m45-27 13 5M71 144l9-3" stroke="#b2ada5" stroke-width="5" stroke-linecap="round"/></g>
+</svg>
+</div>
+<svg id="eye" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 24Q24 1 45 24Q24 47 3 24Z" fill="#f8e5bb" stroke="#57351d" stroke-width="3"/><circle cx="24" cy="24" r="10" fill="#77a9a7" stroke="#57351d" stroke-width="2"/><circle cx="24" cy="24" r="5" fill="#2c302d"/><circle cx="21" cy="21" r="2.5" fill="white"/></svg>
+</div>
+<p class="note">На компьютере наведи курсор на Тимофея. На телефоне коснись его. Когда взгляд уйдёт, он вернётся через пару секунд.</p>
+<script>
+const scene=document.getElementById('scene'),person=document.getElementById('person'),eye=document.getElementById('eye');let timer;
+function hide(){clearTimeout(timer);person.classList.add('changed')}
+function restore(){clearTimeout(timer);timer=setTimeout(()=>person.classList.remove('changed'),1800)}
+scene.addEventListener('pointermove',e=>{if(e.pointerType==='mouse'){const r=scene.getBoundingClientRect();eye.style.left=(e.clientX-r.left)+'px';eye.style.top=(e.clientY-r.top)+'px'}});
+person.addEventListener('pointerenter',hide);person.addEventListener('pointerleave',restore);
+person.addEventListener('click',()=>{hide();restore()});
+person.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();hide();restore()}});
+scene.addEventListener('pointerleave',restore);
+</script>
+</body></html>
