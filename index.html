@@ -10,15 +10,28 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 .scene svg{display:block;width:100%;height:auto}
 #eye{position:absolute;left:0;top:0;pointer-events:none;transform:translate(-50%,-50%);width:45px;height:45px;display:none;filter:drop-shadow(1px 2px 2px #4b311b80);z-index:5}
 .scene:hover #eye{display:block}
-#person{position:absolute;left:21.7%;top:40.6%;width:3.44%;height:auto;cursor:none;transform:translate(-50%,-50%);aspect-ratio:160/180;user-select:none;-webkit-tap-highlight-color:transparent}
-#person svg{width:100%;height:100%;overflow:visible}
-#person .rock{opacity:0}#person.changed .alive{opacity:0}#person.changed .rock{opacity:1}
-#person .alive,#person .rock{transition:opacity .12s}
-#person .peek-eyes{opacity:0;transition:opacity .12s}
-#person.peeking .peek-eyes{opacity:1}
-#person .pupils{transition:transform .22s ease}
-#person.look-left .pupils{transform:translateX(-5px)}
-#person.look-right .pupils{transform:translateX(5px)}
+#timofey  {
+  position:absolute;
+   
+   left:25.7%;   /* Положение по горизонтали */
+   top:43.6%;    /* Положение по вертикали */
+   width:3.44%;  /* Размер персонажа */
+   
+   height:auto;
+   cursor:none;
+   transform:translate(-50%,-50%);
+   aspect-ratio:160/180;
+   user-select:none;
+   -webkit-tap-highlight-color:transparent
+  }
+#timofey svg{width:100%;height:100%;overflow:visible}
+#timofey .rock{opacity:0}#timofey.changed .alive{opacity:0}#timofey.changed .rock{opacity:1}
+#timofey .alive,#timofey .rock{transition:opacity .12s}
+#timofey .peek-eyes{opacity:0;transition:opacity .12s}
+#timofey.peeking .peek-eyes{opacity:1}
+#timofey .pupils{transition:transform .22s ease}
+#timofey.look-left .pupils{transform:translateX(-5px)}
+#timofey.look-right .pupils{transform:translateX(5px)}
 .note{font-size:15px;padding:0 12px 24px}.scene:focus-visible{outline:3px solid #594024}
 @media(hover:none){.scene{cursor:default}#eye{display:none!important}}
 </style>
@@ -27,7 +40,7 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 <header><h1>Деревня Галькино</h1><p>Первый житель появился на карте! Найди Тимофея у входа в почту.</p></header>
 <div class="scene" id="scene" aria-label="Карта деревни Галькино">
 <img src="village.png" alt="Утверждённая карта деревни Галькино" style="display:block;width:100%;height:auto">
-<div id="person" role="button" tabindex="0" aria-label="Тимофей Булыжников. Посмотри, как он превращается в камень.">
+<div id="timofey" role="button" tabindex="0" aria-label="Тимофей Булыжников. Посмотри, как он превращается в камень.">
 <svg viewBox="0 0 160 180" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 <g class="alive">
 <ellipse cx="80" cy="158" rx="62" ry="12" fill="#5c583e" opacity=".22"/>
@@ -51,24 +64,24 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 </div>
 <p class="note">Тимофей пока условно нарисован, а сама карта — утверждённая и неизменённая. На компьютере наведи курсор на Тимофея. На телефоне коснись его. Через секунду после ухода взгляда камень осторожно откроет глаза, посмотрит налево, направо и прямо — и только потом вернётся Тимофей.</p>
 <script>
-const scene=document.getElementById('scene'),person=document.getElementById('person'),eye=document.getElementById('eye');
+const scene=document.getElementById('scene'),timofey=document.getElementById('timofey'),eye=document.getElementById('eye');
 let timers=[];let isWatching=false;
 function clearSteps(){timers.forEach(clearTimeout);timers=[]}
 function later(fn,ms){timers.push(setTimeout(fn,ms))}
-function hide(){isWatching=true;clearSteps();person.className='changed'}
+function hide(){isWatching=true;clearSteps();timofey.className='changed'}
 function restore(){
   isWatching=false;clearSteps();
-  if(!person.classList.contains('changed'))return;
-  later(()=>{if(!isWatching)person.classList.add('peeking','look-left')},1000);
-  later(()=>{if(!isWatching){person.classList.remove('look-left');person.classList.add('look-right')}},1600);
-  later(()=>{if(!isWatching)person.classList.remove('look-right')},2350);
-  later(()=>{if(!isWatching)person.className=''},2850);
+  if(!timofey.classList.contains('changed'))return;
+  later(()=>{if(!isWatching)timofey.classList.add('peeking','look-left')},1000);
+  later(()=>{if(!isWatching){timofey.classList.remove('look-left');timofey.classList.add('look-right')}},1600);
+  later(()=>{if(!isWatching)timofey.classList.remove('look-right')},2350);
+  later(()=>{if(!isWatching)timofey.className=''},2850);
 }
 scene.addEventListener('pointermove',e=>{if(e.pointerType==='mouse'){const r=scene.getBoundingClientRect();eye.style.left=(e.clientX-r.left)+'px';eye.style.top=(e.clientY-r.top)+'px'}});
-person.addEventListener('pointerenter',hide);
-person.addEventListener('pointerleave',restore);
-person.addEventListener('click',()=>{hide();restore()});
-person.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();hide();restore()}});
+timofey.addEventListener('pointerenter',hide);
+timofey.addEventListener('pointerleave',restore);
+timofey.addEventListener('click',()=>{hide();restore()});
+timofey.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();hide();restore()}});
 scene.addEventListener('pointerleave',restore);
 </script>
 </body></html>
