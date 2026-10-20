@@ -10,6 +10,7 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 .scene svg{display:block;width:100%;height:auto}
 #eye{position:absolute;left:0;top:0;pointer-events:none;transform:translate(-50%,-50%);width:45px;height:45px;display:none;filter:drop-shadow(1px 2px 2px #4b311b80);z-index:5}
 .scene:hover #eye{display:block}
+/* ТИМОФЕЙ БУЛЫЖНИКОВ — ПОЧТАЛЬОН */
 #timofey  {
   position:absolute;
    
@@ -24,14 +25,33 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
    user-select:none;
    -webkit-tap-highlight-color:transparent
   }
+
+/* МАРФА КРОШКИНА — ПЕКАРЬ */
+#marfa {
+    position: absolute;
+
+    left: 30%;
+    top: 43%;
+    width: 3.44%;
+
+    height: auto;
+    cursor: none;
+    transform: translate(-50%, -50%);
+    aspect-ratio: 160 / 180;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
 #timofey svg{width:100%;height:100%;overflow:visible}
-#timofey .rock{opacity:0}#timofey.changed .alive{opacity:0}#timofey.changed .rock{opacity:1}
-#timofey .alive,#timofey .rock{transition:opacity .12s}
-#timofey .peek-eyes{opacity:0;transition:opacity .12s}
-#timofey.peeking .peek-eyes{opacity:1}
-#timofey .pupils{transition:transform .22s ease}
-#timofey.look-left .pupils{transform:translateX(-5px)}
-#timofey.look-right .pupils{transform:translateX(5px)}
+#timofey .rock,#marfa .rock{opacity:0}
+#timofey.changed .alive, #marfa.changed .alive{opacity:0}
+#timofey.changed .rock, #marfa.changed .rock{opacity:1}
+#timofey .alive,#marfa .alive,
+#timofey .rock, #marfa .rock{transition:opacity .12s}
+#timofey .peek-eyes, #marfa .peek-eyes{opacity:0;transition:opacity .12s}
+#timofey.peeking .peek-eyes, #marfa.peeking .peek-eyes{opacity:1}
+#timofey .pupils, #marfa .pupils{transition:transform .22s ease}
+#timofey.look-left .pupils, #marfa.look-left .pupils{transform:translateX(-5px)}
+#timofey.look-right .pupils, #marfa.look-right .pupils{transform:translateX(5px)}
 .note{font-size:15px;padding:0 12px 24px}.scene:focus-visible{outline:3px solid #594024}
 @media(hover:none){.scene{cursor:default}#eye{display:none!important}}
 </style>
@@ -40,6 +60,7 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 <header><h1>Деревня Галькино</h1><p>Первый житель появился на карте! Найди Тимофея у входа в почту.</p></header>
 <div class="scene" id="scene" aria-label="Карта деревни Галькино">
 <img src="village.png" alt="Утверждённая карта деревни Галькино" style="display:block;width:100%;height:auto">
+<!-- ТИМОФЕЙ БУЛЫЖНИКОВ -->
 <div id="timofey" role="button" tabindex="0" aria-label="Тимофей Булыжников. Посмотри, как он превращается в камень.">
 <svg viewBox="0 0 160 180" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 <g class="alive">
@@ -60,28 +81,161 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 </g>
 </svg>
 </div>
+<!-- МАРФА КРОШКИНА -->
+<div id="marfa" role="button" tabindex="0"
+     aria-label="Марфа Крошкина. Пекарь.">
+
+<svg viewBox="0 0 160 180"
+     xmlns="http://www.w3.org/2000/svg"
+     aria-hidden="true">
+
+    <g class="alive">
+        <ellipse cx="80" cy="158" rx="60" ry="12"
+                 fill="#5c583e" opacity=".22"/>
+
+        <path d="M22 140 Q15 55 76 45 Q143 39 140 140
+                 Q115 165 75 163 Q40 164 22 140Z"
+              fill="#a09a90" stroke="#514d48"
+              stroke-width="5"/>
+
+        <!-- Поварской колпак -->
+        <path d="M42 60 Q25 35 47 25 Q60 5 80 22
+                 Q104 2 119 26 Q143 43 118 60Z"
+              fill="#fff3dc" stroke="#66594d"
+              stroke-width="4"/>
+
+        <circle cx="59" cy="96" r="7" fill="#2c2825"/>
+        <circle cx="103" cy="96" r="7" fill="#2c2825"/>
+
+        <path d="M65 121 Q80 134 97 119"
+              stroke="#473b33" stroke-width="4"
+              fill="none" stroke-linecap="round"/>
+
+        <!-- Фартук -->
+        <path d="M54 128 L106 128 L113 158
+                 Q80 169 47 158Z"
+              fill="#e8d0a9" stroke="#a17a57"
+              stroke-width="3"/>
+    </g>
+
+    <g class="rock">
+        <ellipse cx="80" cy="155" rx="62" ry="12"
+                 fill="#5c583e" opacity=".22"/>
+        <path d="M18 139 Q19 88 53 77 Q90 56 119 82
+                 Q144 102 142 142 Q103 166 49 157Z"
+              fill="#86817a" stroke="#514d48"
+              stroke-width="5"/>
+    </g>
+
+    <g class="peek-eyes">
+        <ellipse cx="59" cy="113" rx="12" ry="9"
+                 fill="#f9f0dc" stroke="#514d48"
+                 stroke-width="3"/>
+        <ellipse cx="100" cy="113" rx="12" ry="9"
+                 fill="#f9f0dc" stroke="#514d48"
+                 stroke-width="3"/>
+
+        <g class="pupils">
+            <circle cx="59" cy="113" r="5" fill="#252525"/>
+            <circle cx="100" cy="113" r="5" fill="#252525"/>
+        </g>
+    </g>
+
+</svg>
+</div>
 <svg id="eye" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 24Q24 1 45 24Q24 47 3 24Z" fill="#f8e5bb" stroke="#57351d" stroke-width="3"/><circle cx="24" cy="24" r="10" fill="#77a9a7" stroke="#57351d" stroke-width="2"/><circle cx="24" cy="24" r="5" fill="#2c302d"/><circle cx="21" cy="21" r="2.5" fill="white"/></svg>
 </div>
 <p class="note">Тимофей пока условно нарисован, а сама карта — утверждённая и неизменённая. На компьютере наведи курсор на Тимофея. На телефоне коснись его. Через секунду после ухода взгляда камень осторожно откроет глаза, посмотрит налево, направо и прямо — и только потом вернётся Тимофей.</p>
+
 <script>
-const scene=document.getElementById('scene'),timofey=document.getElementById('timofey'),eye=document.getElementById('eye');
-let timers=[];let isWatching=false;
-function clearSteps(){timers.forEach(clearTimeout);timers=[]}
-function later(fn,ms){timers.push(setTimeout(fn,ms))}
-function hide(){isWatching=true;clearSteps();timofey.className='changed'}
-function restore(){
-  isWatching=false;clearSteps();
-  if(!timofey.classList.contains('changed'))return;
-  later(()=>{if(!isWatching)timofey.classList.add('peeking','look-left')},1000);
-  later(()=>{if(!isWatching){timofey.classList.remove('look-left');timofey.classList.add('look-right')}},1600);
-  later(()=>{if(!isWatching)timofey.classList.remove('look-right')},2350);
-  later(()=>{if(!isWatching)timofey.className=''},2850);
+const scene = document.getElementById('scene');
+const eye = document.getElementById('eye');
+
+// Все жители деревни
+const residents = [
+    document.getElementById('timofey'),
+    document.getElementById('marfa')
+];
+
+function setupResident(person) {
+    let timers = [];
+    let isWatching = false;
+
+    function clearSteps() {
+        timers.forEach(clearTimeout);
+        timers = [];
+    }
+
+    function later(fn, ms) {
+        timers.push(setTimeout(fn, ms));
+    }
+
+    function hide() {
+        isWatching = true;
+        clearSteps();
+        person.className = 'changed';
+    }
+
+    function restore() {
+        isWatching = false;
+        clearSteps();
+
+        if (!person.classList.contains('changed')) return;
+
+        later(() => {
+            if (!isWatching)
+                person.classList.add('peeking', 'look-left');
+        }, 1000);
+
+        later(() => {
+            if (!isWatching) {
+                person.classList.remove('look-left');
+                person.classList.add('look-right');
+            }
+        }, 1600);
+
+        later(() => {
+            if (!isWatching)
+                person.classList.remove('look-right');
+        }, 2350);
+
+        later(() => {
+            if (!isWatching)
+                person.className = '';
+        }, 2850);
+    }
+
+    person.addEventListener('pointerenter', hide);
+    person.addEventListener('pointerleave', restore);
+
+    person.addEventListener('click', () => {
+        hide();
+        restore();
+    });
+
+    person.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            hide();
+            restore();
+        }
+    });
+
+    scene.addEventListener('pointerleave', restore);
 }
-scene.addEventListener('pointermove',e=>{if(e.pointerType==='mouse'){const r=scene.getBoundingClientRect();eye.style.left=(e.clientX-r.left)+'px';eye.style.top=(e.clientY-r.top)+'px'}});
-timofey.addEventListener('pointerenter',hide);
-timofey.addEventListener('pointerleave',restore);
-timofey.addEventListener('click',()=>{hide();restore()});
-timofey.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();hide();restore()}});
-scene.addEventListener('pointerleave',restore);
+
+// Подключаем анимацию каждому жителю
+residents.forEach(setupResident);
+
+// Курсор-глаз
+scene.addEventListener('pointermove', e => {
+    if (e.pointerType === 'mouse') {
+        const r = scene.getBoundingClientRect();
+
+        eye.style.left = (e.clientX - r.left) + 'px';
+        eye.style.top = (e.clientY - r.top) + 'px';
+    }
+});
 </script>
+
 </body></html>
