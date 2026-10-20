@@ -1,241 +1,56 @@
 <!doctype html>
-<html lang="ru">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Галькино — живая деревня</title>
 <style>
 :root{--ink:#56351d}*{box-sizing:border-box}body{margin:0;background:#e8d4a9;color:var(--ink);font-family:Georgia,serif;text-align:center}
 header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin:9px 0}
 .scene{position:relative;width:min(98vw,1536px);margin:16px auto 12px;border:6px solid #b78a51;border-radius:26px;overflow:hidden;box-shadow:0 8px 30px #64401b45;cursor:none;background:#b7d5bf;touch-action:manipulation}
-.scene svg{display:block;width:100%;height:auto}
+.map{display:block;width:100%;height:auto}
 #eye{position:absolute;left:0;top:0;pointer-events:none;transform:translate(-50%,-50%);width:45px;height:45px;display:none;filter:drop-shadow(1px 2px 2px #4b311b80);z-index:5}
 .scene:hover #eye{display:block}
-/* ТИМОФЕЙ БУЛЫЖНИКОВ — ПОЧТАЛЬОН */
-#timofey  {
-  position:absolute;
-   
-   left:23.7%;   /* Положение по горизонтали */
-   top:42.0%;    /* Положение по вертикали */
-   width:3.44%;  /* Размер персонажа */
-   
-   height:auto;
-   cursor:none;
-   transform:translate(-50%,-50%);
-   aspect-ratio:160/180;
-   user-select:none;
-   -webkit-tap-highlight-color:transparent
-  }
-
-/* МАРФА КРОШКИНА — ПЕКАРЬ */
-#marfa {
-    position: absolute;
-
-    left: 63.7%;
-    top: 34%;
-    width: 3.44%;
-
-    height: auto;
-    cursor: none;
-    transform: translate(-50%, -50%);
-    aspect-ratio: 160 / 180;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-}
-#timofey svg{width:100%;height:100%;overflow:visible}
-#timofey .rock,#marfa .rock{opacity:0}
-#timofey.changed .alive, #marfa.changed .alive{opacity:0}
-#timofey.changed .rock, #marfa.changed .rock{opacity:1}
-#timofey .alive,#marfa .alive,
-#timofey .rock, #marfa .rock{transition:opacity .12s}
-#timofey .peek-eyes, #marfa .peek-eyes{opacity:0;transition:opacity .12s}
-#timofey.peeking .peek-eyes, #marfa.peeking .peek-eyes{opacity:1}
-#timofey .pupils, #marfa .pupils{transition:transform .22s ease}
-#timofey.look-left .pupils, #marfa.look-left .pupils{transform:translateX(-5px)}
-#timofey.look-right .pupils, #marfa.look-right .pupils{transform:translateX(5px)}
-.note{font-size:15px;padding:0 12px 24px}.scene:focus-visible{outline:3px solid #594024}
+/* Координаты жителей: меняй left, top и width */
+#timofey{left:23.7%;top:42.0%;width:3.44%}
+#marfa{left:63.7%;top:34.0%;width:3.44%}
+.resident{position:absolute;transform:translate(-50%,-50%);aspect-ratio:160/180;cursor:none;user-select:none;-webkit-tap-highlight-color:transparent;z-index:2}
+.resident img{position:absolute;width:100%;height:100%;object-fit:contain;left:0;top:0;pointer-events:none;transition:opacity .12s}
+.resident .stone{opacity:0}
+.resident.changed .alive{opacity:0}
+.resident.changed .stone{opacity:1}
+.note{font-size:15px;padding:0 12px 24px}
 @media(hover:none){.scene{cursor:default}#eye{display:none!important}}
-</style>
-</head>
-<body>
-<header><h1>Деревня Галькино</h1><p>Первый житель появился на карте! Найди Тимофея у входа в почту.</p></header>
+</style></head><body>
+<header><h1>Деревня Галькино</h1><p>Познакомься с Тимофеем и Марфой!</p></header>
 <div class="scene" id="scene" aria-label="Карта деревни Галькино">
-<img src="village.png" alt="Утверждённая карта деревни Галькино" style="display:block;width:100%;height:auto">
-<!-- ТИМОФЕЙ БУЛЫЖНИКОВ -->
-<div id="timofey" role="button" tabindex="0" aria-label="Тимофей Булыжников. Посмотри, как он превращается в камень.">
-<svg viewBox="0 0 160 180" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-<g class="alive">
-<ellipse cx="80" cy="158" rx="62" ry="12" fill="#5c583e" opacity=".22"/>
-<path d="M22 140Q15 55 76 45Q143 39 140 140Q115 165 75 163Q40 164 22 140Z" fill="#85827a" stroke="#514d48" stroke-width="5"/>
-<path d="M40 58Q80 5 123 57L40 58" fill="#346982" stroke="#264c60" stroke-width="5"/>
-<rect x="32" y="52" width="102" height="13" rx="6" fill="#346982" stroke="#264c60" stroke-width="4"/>
-<circle cx="59" cy="96" r="7" fill="#2c2825"/><circle cx="103" cy="96" r="7" fill="#2c2825"/>
-<path d="M65 121Q80 134 97 119" stroke="#473b33" stroke-width="4" fill="none" stroke-linecap="round"/>
-<rect x="103" y="124" width="41" height="30" rx="5" fill="#ae7843" stroke="#684326" stroke-width="4"/>
-<path d="M105 125l18 15 18-15" stroke="#684326" stroke-width="3" fill="none"/>
-</g>
-<g class="rock"><ellipse cx="80" cy="155" rx="62" ry="12" fill="#5c583e" opacity=".22"/><path d="M18 139Q19 88 53 77Q90 56 119 82Q144 102 142 142Q103 166 49 157Z" fill="#86817a" stroke="#514d48" stroke-width="5"/><path d="M40 129l13-8m45-27 13 5M71 144l9-3" stroke="#b2ada5" stroke-width="5" stroke-linecap="round"/></g>
-<g class="peek-eyes">
-<ellipse cx="59" cy="113" rx="12" ry="9" fill="#f9f0dc" stroke="#514d48" stroke-width="3"/>
-<ellipse cx="100" cy="113" rx="12" ry="9" fill="#f9f0dc" stroke="#514d48" stroke-width="3"/>
-<g class="pupils"><circle cx="59" cy="113" r="5" fill="#252525"/><circle cx="100" cy="113" r="5" fill="#252525"/></g>
-</g>
-</svg>
-</div>
-<!-- МАРФА КРОШКИНА -->
-<div id="marfa" role="button" tabindex="0"
-     aria-label="Марфа Крошкина. Пекарь.">
-
-<svg viewBox="0 0 160 180"
-     xmlns="http://www.w3.org/2000/svg"
-     aria-hidden="true">
-
-    <g class="alive">
-        <ellipse cx="80" cy="158" rx="60" ry="12"
-                 fill="#5c583e" opacity=".22"/>
-
-        <path d="M22 140 Q15 55 76 45 Q143 39 140 140
-                 Q115 165 75 163 Q40 164 22 140Z"
-              fill="#a09a90" stroke="#514d48"
-              stroke-width="5"/>
-
-        <!-- Поварской колпак -->
-        <path d="M42 60 Q25 35 47 25 Q60 5 80 22
-                 Q104 2 119 26 Q143 43 118 60Z"
-              fill="#fff3dc" stroke="#66594d"
-              stroke-width="4"/>
-
-        <circle cx="59" cy="96" r="7" fill="#2c2825"/>
-        <circle cx="103" cy="96" r="7" fill="#2c2825"/>
-
-        <path d="M65 121 Q80 134 97 119"
-              stroke="#473b33" stroke-width="4"
-              fill="none" stroke-linecap="round"/>
-
-        <!-- Фартук -->
-        <path d="M54 128 L106 128 L113 158
-                 Q80 169 47 158Z"
-              fill="#e8d0a9" stroke="#a17a57"
-              stroke-width="3"/>
-    </g>
-
-    <g class="rock">
-        <ellipse cx="80" cy="155" rx="62" ry="12"
-                 fill="#5c583e" opacity=".22"/>
-        <path d="M18 139 Q19 88 53 77 Q90 56 119 82
-                 Q144 102 142 142 Q103 166 49 157Z"
-              fill="#86817a" stroke="#514d48"
-              stroke-width="5"/>
-    </g>
-
-    <g class="peek-eyes">
-        <ellipse cx="59" cy="113" rx="12" ry="9"
-                 fill="#f9f0dc" stroke="#514d48"
-                 stroke-width="3"/>
-        <ellipse cx="100" cy="113" rx="12" ry="9"
-                 fill="#f9f0dc" stroke="#514d48"
-                 stroke-width="3"/>
-
-        <g class="pupils">
-            <circle cx="59" cy="113" r="5" fill="#252525"/>
-            <circle cx="100" cy="113" r="5" fill="#252525"/>
-        </g>
-    </g>
-
-</svg>
-</div>
+<img src="village.png" class="map" alt="Карта деревни Галькино">
+<div id="timofey" class="resident" role="button" tabindex="0" aria-label="Тимофей Булыжников, почтальон">
+<img class="alive" src="timofey_alive.png" alt=""><img class="stone" src="timofey_closed.png" alt=""></div>
+<div id="marfa" class="resident" role="button" tabindex="0" aria-label="Марфа Крошкина, пекарь">
+<img class="alive" src="marfa_alive.png" alt=""><img class="stone" src="marfa_closed.png" alt=""></div>
 <svg id="eye" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 24Q24 1 45 24Q24 47 3 24Z" fill="#f8e5bb" stroke="#57351d" stroke-width="3"/><circle cx="24" cy="24" r="10" fill="#77a9a7" stroke="#57351d" stroke-width="2"/><circle cx="24" cy="24" r="5" fill="#2c302d"/><circle cx="21" cy="21" r="2.5" fill="white"/></svg>
 </div>
-<p class="note">Тимофей пока условно нарисован, а сама карта — утверждённая и неизменённая. На компьютере наведи курсор на Тимофея. На телефоне коснись его. Через секунду после ухода взгляда камень осторожно откроет глаза, посмотрит налево, направо и прямо — и только потом вернётся Тимофей.</p>
-
+<p class="note">Наведи глаз на жителя: он станет камнем. Уведи курсор: через секунду камень посмотрит влево, вправо, прямо и снова оживёт.</p>
 <script>
-const scene = document.getElementById('scene');
-const eye = document.getElementById('eye');
-
-// Все жители деревни
-const residents = [
-    document.getElementById('timofey'),
-    document.getElementById('marfa')
-];
-
-function setupResident(person) {
-    let timers = [];
-    let isWatching = false;
-
-    function clearSteps() {
-        timers.forEach(clearTimeout);
-        timers = [];
-    }
-
-    function later(fn, ms) {
-        timers.push(setTimeout(fn, ms));
-    }
-
-    function hide() {
-        isWatching = true;
-        clearSteps();
-        person.className = 'changed';
-    }
-
-    function restore() {
-        isWatching = false;
-        clearSteps();
-
-        if (!person.classList.contains('changed')) return;
-
-        later(() => {
-            if (!isWatching)
-                person.classList.add('peeking', 'look-left');
-        }, 1000);
-
-        later(() => {
-            if (!isWatching) {
-                person.classList.remove('look-left');
-                person.classList.add('look-right');
-            }
-        }, 1600);
-
-        later(() => {
-            if (!isWatching)
-                person.classList.remove('look-right');
-        }, 2350);
-
-        later(() => {
-            if (!isWatching)
-                person.className = '';
-        }, 2850);
-    }
-
-    person.addEventListener('pointerenter', hide);
-    person.addEventListener('pointerleave', restore);
-
-    person.addEventListener('click', () => {
-        hide();
-        restore();
-    });
-
-    person.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            hide();
-            restore();
-        }
-    });
-
-    scene.addEventListener('pointerleave', restore);
+const scene=document.getElementById('scene'),eye=document.getElementById('eye');
+function setupResident(person){
+  const name=person.id,stone=person.querySelector('.stone');
+  const states={closed:name+'_closed.png',left:name+'_left.png',right:name+'_right.png',center:name+'_center.png'};
+  let timers=[],watching=false;
+  const clear=()=>{timers.forEach(clearTimeout);timers=[]};
+  const later=(fn,ms)=>timers.push(setTimeout(fn,ms));
+  function hide(){watching=true;clear();stone.src=states.closed;person.classList.add('changed')}
+  function restore(){watching=false;clear();if(!person.classList.contains('changed'))return;
+    later(()=>{if(!watching)stone.src=states.left},1000);
+    later(()=>{if(!watching)stone.src=states.right},1600);
+    later(()=>{if(!watching)stone.src=states.center},2350);
+    later(()=>{if(!watching)person.classList.remove('changed')},2850);
+  }
+  Object.values(states).forEach(src=>{const img=new Image();img.src=src});
+  person.addEventListener('pointerenter',hide);
+  person.addEventListener('pointerleave',restore);
+  person.addEventListener('click',()=>{hide();restore()});
+  person.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();hide();restore()}});
+  scene.addEventListener('pointerleave',restore);
 }
-
-// Подключаем анимацию каждому жителю
-residents.forEach(setupResident);
-
-// Курсор-глаз
-scene.addEventListener('pointermove', e => {
-    if (e.pointerType === 'mouse') {
-        const r = scene.getBoundingClientRect();
-
-        eye.style.left = (e.clientX - r.left) + 'px';
-        eye.style.top = (e.clientY - r.top) + 'px';
-    }
-});
-</script>
-
-</body></html>
+document.querySelectorAll('.resident').forEach(setupResident);
+scene.addEventListener('pointermove',e=>{if(e.pointerType==='mouse'){const r=scene.getBoundingClientRect();eye.style.left=(e.clientX-r.left)+'px';eye.style.top=(e.clientY-r.top)+'px'}});
+</script></body></html>
