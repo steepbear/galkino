@@ -21,30 +21,11 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 .resident.look-right .pupils{transform:translateX(4px)}
 .resident.changed .alive{opacity:0}
 .resident.changed .stone{opacity:1}
+/* Навес виден только во время каменного состояния Марфы и ещё 150 мс после него. */
+#marfa-front{position:absolute;left:0;top:0;width:100%;height:100%;z-index:3;pointer-events:none;display:none}
+.scene.marfa-front-visible #marfa-front{display:block}
 .note{font-size:15px;padding:0 12px 24px}
 @media(hover:none){.scene{cursor:default}#eye{display:none!important}}
- /* Передний навес пекарни */
-#marfa-front {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: fill;
-    z-index: 3;
-    pointer-events: none;
-    display: none;
-}
-
-/* Показываем навес только для камня Марфы */
-.scene:has(#marfa.changed) #marfa-front {
-    display: block;
-}
-
-/* Марфа под передним слоем */
-#marfa {
-    z-index: 2;
-}
 </style></head><body>
 <header><h1>Деревня Галькино</h1><p>Познакомься с Тимофеем и Марфой!</p></header>
 <div class="scene" id="scene" aria-label="Карта деревни Галькино">
@@ -56,10 +37,9 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 <div id="marfa" class="resident" role="button" tabindex="0" aria-label="Марфа Крошкина, пекарь">
 <img class="alive" src="marfa_alive.png" alt=""><img class="stone" src="marfa_closed.png" alt="">
 <svg class="stone-eyes" viewBox="0 0 160 180" aria-hidden="true"><g fill="#f9f0dc" stroke="#514d48" stroke-width="2.5"><ellipse cx="59" cy="100" rx="11" ry="9"/><ellipse cx="101" cy="100" rx="11" ry="9"/></g><g class="pupils"><circle cx="59" cy="100" r="5" fill="#252525"/><circle cx="101" cy="100" r="5" fill="#252525"/><circle cx="57" cy="98" r="1.5" fill="white"/><circle cx="99" cy="98" r="1.5" fill="white"/></g></svg></div>
+<img src="marfa_front.png" id="marfa-front" alt="" aria-hidden="true">
 <svg id="eye" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 24Q24 1 45 24Q24 47 3 24Z" fill="#f8e5bb" stroke="#57351d" stroke-width="3"/><circle cx="24" cy="24" r="10" fill="#77a9a7" stroke="#57351d" stroke-width="2"/><circle cx="24" cy="24" r="5" fill="#2c302d"/><circle cx="21" cy="21" r="2.5" fill="white"/></svg>
-<img src="marfa_front.png" id="marfa-front" alt="">
 </div>
-
 <p class="note">Наведи глаз на жителя: он станет камнем. Уведи курсор: через секунду камень посмотрит влево, вправо, прямо и снова оживёт.</p>
 <script>
 const scene=document.getElementById('scene'),eye=document.getElementById('eye');
@@ -67,12 +47,14 @@ function setupResident(person){
   let timers=[],watching=false;
   const clear=()=>{timers.forEach(clearTimeout);timers=[]};
   const later=(fn,ms)=>timers.push(setTimeout(fn,ms));
-  function hide(){watching=true;clear();person.className='resident changed'}
+  function hide(){watching=true;clear();person.className='resident changed';if(person.id==='marfa')scene.classList.add('marfa-front-visible')}
   function restore(){watching=false;clear();if(!person.classList.contains('changed'))return;
     later(()=>{if(!watching)person.classList.add('peeking','look-left')},1000);
     later(()=>{if(!watching){person.classList.remove('look-left');person.classList.add('look-right')}},1600);
     later(()=>{if(!watching)person.classList.remove('look-right')},2350);
     later(()=>{if(!watching)person.className='resident'},2850);
+    // Навес исчезает после того, как переход к обычной Марфе завершился (2850 + 120 мс).
+    if(person.id==='marfa')later(()=>{if(!watching)scene.classList.remove('marfa-front-visible')},3000);
   }
   person.addEventListener('pointerenter',hide);
   person.addEventListener('pointerleave',restore);
