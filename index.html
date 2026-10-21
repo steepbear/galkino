@@ -29,17 +29,17 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 .note{font-size:15px;padding:0 12px 24px}
 @media(hover:none){.scene{cursor:default}#eye{display:none!important}}
 </style></head><body>
-<header><h1>Деревня Галькино</h1><p>Познакомься с Тимофеем, Марфой и Прохором!</p></header>
-<div class="scene" id="scene" aria-label="Карта деревни Галькино">
+<header><h1>Деревня Галькино</h1><p>Присмотрись: камни здесь иногда оживают!</p></header>
+<div class="scene marfa-front-visible" id="scene" aria-label="Карта деревни Галькино">
 <img src="village.png" class="map" alt="Карта деревни Галькино">
-<div id="timofey" class="resident" role="button" tabindex="0" aria-label="Тимофей Булыжников, почтальон">
+<div id="timofey" class="resident changed" role="button" tabindex="0" aria-label="Тимофей Булыжников, почтальон">
 <img class="alive" src="timofey_alive.png" alt=""><img class="stone" src="timofey_closed.png" alt="">
 <!-- Глаза — отдельный прозрачный слой поверх одного камня -->
 <svg class="stone-eyes" viewBox="0 0 160 180" aria-hidden="true"><g fill="#f9f0dc" stroke="#514d48" stroke-width="2.5"><ellipse cx="59" cy="100" rx="11" ry="9"/><ellipse cx="101" cy="100" rx="11" ry="9"/></g><g class="pupils"><circle cx="59" cy="100" r="5" fill="#252525"/><circle cx="101" cy="100" r="5" fill="#252525"/><circle cx="57" cy="98" r="1.5" fill="white"/><circle cx="99" cy="98" r="1.5" fill="white"/></g></svg></div>
-<div id="marfa" class="resident" role="button" tabindex="0" aria-label="Марфа Крошкина, пекарь">
+<div id="marfa" class="resident changed" role="button" tabindex="0" aria-label="Марфа Крошкина, пекарь">
 <img class="alive" src="marfa_alive.png" alt=""><img class="stone" src="marfa_closed.png" alt="">
 <svg class="stone-eyes" viewBox="0 0 160 180" aria-hidden="true"><g fill="#f9f0dc" stroke="#514d48" stroke-width="2.5"><ellipse cx="59" cy="100" rx="11" ry="9"/><ellipse cx="101" cy="100" rx="11" ry="9"/></g><g class="pupils"><circle cx="59" cy="100" r="5" fill="#252525"/><circle cx="101" cy="100" r="5" fill="#252525"/><circle cx="57" cy="98" r="1.5" fill="white"/><circle cx="99" cy="98" r="1.5" fill="white"/></g></svg></div>
-<div id="prokhor" class="resident" role="button" tabindex="0" aria-label="Прохор Мельников, мельник">
+<div id="prokhor" class="resident changed" role="button" tabindex="0" aria-label="Прохор Мельников, мельник">
 <img class="alive" src="prokhor_alive.png" alt=""><img class="stone" src="prokhor_closed.png" alt="">
 <svg class="stone-eyes" viewBox="0 0 160 180" aria-hidden="true">
 <g fill="#f9f0dc" stroke="#514d48" stroke-width="2.5"><ellipse cx="59" cy="100" rx="11" ry="9"/><ellipse cx="101" cy="100" rx="11" ry="9"/></g>
@@ -69,6 +69,9 @@ function setupResident(person){
   person.addEventListener('click',()=>{hide();restore()});
   person.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();hide();restore()}});
   scene.addEventListener('pointerleave',restore);
+  // При загрузке каждый камень оживает с небольшой случайной задержкой.
+  // Наведение мыши отменяет этот запуск и оставляет обычное поведение.
+  later(restore, Math.floor(Math.random()*1000));
 }
 document.querySelectorAll('.resident').forEach(setupResident);
 scene.addEventListener('pointermove',e=>{if(e.pointerType==='mouse'){const r=scene.getBoundingClientRect();eye.style.left=(e.clientX-r.left)+'px';eye.style.top=(e.clientY-r.top)+'px'}});
