@@ -14,8 +14,7 @@ const residents = [
   ['012', 'Мирон Звонарёв', 'Музыкант', 'miron'],
   ['013', 'Никифор Гудков', 'Пасечник', 'nikifor'],
   ['014', 'Таисия Архипова', 'Библиотекарь', 'taisiya'],
-  ['015', 'Елисей Перевалов', 'Путешественник', 'elisey'],
-  ['016', 'Савелий Уступкин', 'Староста', 'saveliy']
+  ['015', 'Елисей Перевалов', 'Путешественник', 'elisey']
 ];
 
 // Читает stories.json — объект вида { "timofey": "stories/timofey.html", ... }
@@ -75,33 +74,80 @@ async function renderResidents() {
     .join('');
 }
 
-// Галерея по gallery.json: [ { "file": "...", "title": "..." }, ... ]
+// Иллюстрации перечисляются в gallery.json. GitHub Pages не умеет
+// автоматически получать список файлов из папки gallery.
 async function renderGallery() {
+  const holder = document.getElementById('gallery');
   let manifest = [];
   try {
-    const r = await fetch('gallery.json');
-    if (r.ok) manifest = await r.json();
-  } catch (e) {
-    // gallery.json нет — покажем подсказку
+    const response = await fetch('gallery.json', {cache: 'no-cache'});
+    if (!response.ok) throw new Error('gallery.json: ' + response.status);
+    const data = await response.json();
+    if (!Array.isArray(data)) throw new Error('gallery.json должен содержать массив');
+    manifest = data;
+  } catch (error) {
+    console.warn('Не удалось загрузить галерею:', error);
+    holder.innerHTML = '<p class="muted">Галерея пока пуста. Добавь изображения в папку gallery и их имена в gallery.json.</p>';
+    return;
   }
 
-  document.getElementById('gallery').innerHTML = manifest.length
-    ? manifest
-        .map(item => `<figure class="tile">
-          <img src="${item.file}" alt="${item.title || 'Иллюстрация'}" tabindex="0">
-          <figcaption>${item.title || ''}</figcaption>
-        </figure>`)
-        .join('')
-    : '<p class="muted">Добавь иллюстрации в gallery.json — они появятся здесь автоматически.</p>';
+  if (!manifest.length) {
+    holder.innerHTML = '<p class="muted">Галерея пока пуста. Добавь изображения в папку gallery и их имена в gallery.json.</p>';
+    return;
+  }
 
-  // Клик / Enter по картинке — открытие лайтбокса
-  document.querySelectorAll('.gallery img').forEach(el => {
-    const open = () => {
-      document.getElementById('large').src = el.src;
-      document.getElementById('overlay').classList.add('open');
-    };
-    el.onclick = open;
-    el.onkeydown = e => { if (e.key === 'Enter') open(); };
+  holder.replaceChildren();
+  const overlay = document.getElementById('overlay');
+  const enlarged = document.getElementById('large');
+  const close = document.getElementById('close-gallery');
+  let previousFocus = null;
+
+  function closeImage() {
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    enlarged.removeAttribute('src');
+    document.body.classList.remove('gallery-lightbox-open');
+    if (previousFocus) previousFocus.focus();
+  }
+
+  for (const item of manifest) {
+    // Удобный формат: ["gallery/first.png", "gallery/second.jpg"]
+    // Старый формат {"file":"gallery/first.png","title":"..."} тоже работает.
+    const file = typeof item === 'string' ? item : item?.file;
+    if (typeof file !== 'string' || !file.trim()) continue;
+    const alt = typeof item === 'object' && typeof item.title === 'string' ? item.title : 'Иллюстрация деревни Галькино';
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'gallery-picture';
+    button.setAttribute('aria-label', 'Открыть иллюстрацию');
+    const img = document.createElement('img');
+    img.src = file;
+    img.alt = alt;
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    img.addEventListener('error', () => button.remove());
+    button.append(img);
+    button.addEventListener('click', () => {
+      previousFocus = button;
+      enlarged.src = img.currentSrc || img.src;
+      enlarged.alt = alt;
+      overlay.classList.add('open');
+      overlay.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('gallery-lightbox-open');
+      close.focus();
+    });
+    holder.append(button);
+  }
+
+  close.addEventListener('click', closeImage);
+  overlay.addEventListener('click', event => { if (event.target === overlay) closeImage(); });
+  document.addEventListener('keydown', event => {
+    if (!overlay.classList.contains('open')) return;
+    if (event.key === 'Escape') closeImage();
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      close.focus();
+    }
   });
 }
 
@@ -112,11 +158,4 @@ document.addEventListener('DOMContentLoaded', () => {
   if (document.getElementById('residents')) renderResidents();
   if (document.getElementById('gallery')) renderGallery();
 
-  // Закрытие лайтбокса: клик по фону или Escape
-  const o = document.getElementById('overlay');
-  if (o) o.onclick = () => o.classList.remove('open');
-
-  document.onkeydown = e => {
-    if (e.key === 'Escape' && o) o.classList.remove('open');
-  };
 });
