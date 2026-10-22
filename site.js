@@ -61,7 +61,7 @@ async function renderResidents() {
     .map(([n, name, job, id]) => {
       const url = links[id];
       return `<article class="tile">
-        <img src="${'images/residents/' + id + '_portrait.png'}"
+        <img src="${'residents/' + id + '_portrait.png'}"
              alt="${name}"
              onerror="this.style.display='none'">
         <h2>${name}</h2>
