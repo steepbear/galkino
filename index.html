@@ -13,6 +13,21 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 #marfa{left:62.8%;top:33.7%;width:3.44%}
 /* Прохор у мельницы: здесь можно изменить положение */
 #prokhor{left:16.5%;top:18%;width:3.44%}
+
+/* ВРЕМЕННЫЕ координаты новых жителей: уточняй в режиме ?edit=1 */
+#anfisa{left:37%;top:23%;width:3.44%}
+#egor{left:74%;top:67%;width:3.44%}
+#stepan{left:54%;top:76%;width:3.44%}
+#vasilisa{left:35%;top:70%;width:3.44%}
+#luka{left:83%;top:42%;width:3.44%}
+#darya{left:60%;top:45%;width:3.44%}
+#foma{left:46%;top:34%;width:3.44%}
+#kuzma{left:83%;top:74%;width:3.44%}
+#miron{left:72%;top:22%;width:3.44%}
+#nikifor{left:29%;top:84%;width:3.44%}
+#taisiya{left:49%;top:54%;width:3.44%}
+#elisey{left:91%;top:28%;width:3.44%}
+#saveliy{left:51%;top:15%;width:3.44%}
 .resident{position:absolute;transform:translate(-50%,-50%);aspect-ratio:160/180;cursor:none;user-select:none;-webkit-tap-highlight-color:transparent;z-index:2}
 .resident img{position:absolute;width:100%;height:100%;object-fit:contain;left:0;top:0;pointer-events:none;transition:opacity .12s}
  .resident .stone,.resident .stone-eyes{opacity:0}
@@ -52,6 +67,26 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 .topbar .home-link{font-weight:800;margin-right:auto}
 .topbar .buy-link{margin-left:auto;color:#ffebc4;background:linear-gradient(#84522d,#58331d);border:3px ridge #b98b52;box-shadow:2px 3px 3px #60422580;padding:9px 16px}
 @media(max-width:700px){.topbar{gap:2px;padding:7px 5px}.topbar .home-link{width:100%;margin:0}.topbar .buy-link{margin:4px auto}.topbar a{font-size:14px;padding:7px 6px}}
+
+/* Редактор размещения включается только через ?edit=1 */
+.editor-panel{display:none;max-width:1000px;margin:12px auto;padding:16px;background:#fff4d9;border:2px solid #b78a51;border-radius:12px;text-align:left;box-shadow:0 4px 14px #66401b20}
+.edit-mode .editor-panel{display:block}
+.editor-panel h2{margin:0 0 10px;font-size:21px}
+.editor-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0}
+.editor-panel select,.editor-panel input,.editor-panel button{font:inherit;padding:7px;border:1px solid #a87e4e;border-radius:6px;background:white;color:#56351d}
+.editor-panel button{cursor:pointer;background:#f3dbab}
+.editor-panel button:hover{background:#e9c58e}
+.editor-panel input[type=range]{width:160px;padding:0}
+.editor-panel pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f6e7c6;padding:12px;border-radius:7px;font-size:13px;max-height:220px;overflow:auto}
+.edit-mode .scene{cursor:crosshair;touch-action:none}
+.edit-mode .scene #eye{display:none!important}
+.edit-mode .resident{cursor:grab;touch-action:none;outline:1px dashed #fff9;outline-offset:2px;z-index:4}
+.edit-mode .resident.selected{outline:3px solid #ffc31e;z-index:6}
+.edit-mode .resident.dragging{cursor:grabbing}
+.edit-mode .resident .alive{opacity:1!important}
+.edit-mode .resident .stone,.edit-mode .resident .stone-eyes{opacity:0!important}
+.edit-mode #village-foreground,.edit-mode #marfa-foreground{pointer-events:none}
+.editor-hint{font-size:13px;line-height:1.45}
 </style></head><body>
 <nav class="topbar" aria-label="Разделы сайта"><a class="home-link" href="index.html">✦ Деревня Галькино</a><a href="about.html">О деревне</a><a href="residents.html">Наши жители</a><a href="how.html">Как это работает</a><a href="gallery.html">Галерея</a><a href="contacts.html">Контакты</a><a class="buy-link" href="buy.html">Где купить?</a></nav>
 <header><h1>Деревня Галькино</h1><p>Присмотрись: камни здесь иногда оживают!</p></header>
@@ -70,15 +105,91 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 <g fill="#f9f0dc" stroke="#514d48" stroke-width="2.5"><ellipse cx="59" cy="100" rx="11" ry="9"/><ellipse cx="101" cy="100" rx="11" ry="9"/></g>
 <g class="pupils"><circle cx="59" cy="100" r="5" fill="#252525"/><circle cx="101" cy="100" r="5" fill="#252525"/><circle cx="57" cy="98" r="1.5" fill="white"/><circle cx="99" cy="98" r="1.5" fill="white"/></g></svg>
 </div>
+<div id="anfisa" class="resident changed" role="button" tabindex="0" aria-label="Анфиса Миронова, учительница">
+  <img class="alive" src="map/characters/anfisa_alive.webp" alt="">
+  <img class="stone" src="map/stones/anfisa_closed.png" alt="">
+  <svg class="stone-eyes" viewBox="0 0 160 180" aria-hidden="true"><g fill="#f9f0dc" stroke="#514d48" stroke-width="2.5"><ellipse cx="59" cy="100" rx="11" ry="9"/><ellipse cx="101" cy="100" rx="11" ry="9"/></g><g class="pupils"><circle cx="59" cy="100" r="5" fill="#252525"/><circle cx="101" cy="100" r="5" fill="#252525"/><circle cx="57" cy="98" r="1.5" fill="white"/><circle cx="99" cy="98" r="1.5" fill="white"/></g></svg>
+</div>
+<div id="egor" class="resident changed" role="button" tabindex="0" aria-label="Егор Тихонов, рыбак">
+  <img class="alive" src="map/characters/egor_alive.webp" alt="">
+  <img class="stone" src="map/stones/egor_closed.png" alt="">
+  <svg class="stone-eyes" viewBox="0 0 160 180" aria-hidden="true"><g fill="#f9f0dc" stroke="#514d48" stroke-width="2.5"><ellipse cx="59" cy="100" rx="11" ry="9"/><ellipse cx="101" cy="100" rx="11" ry="9"/></g><g class="pupils"><circle cx="59" cy="100" r="5" fill="#252525"/><circle cx="101" cy="100" r="5" fill="#252525"/><circle cx="57" cy="98" r="1.5" fill="white"/><circle cx="99" cy="98" r="1.5" fill="white"/></g></svg>
+</div>
+<div id="stepan" class="resident changed" role="button" tabindex="0" aria-label="Степан Гранитов, кузнец">
+  <img class="alive" src="map/characters/stepan_alive.webp" alt="">
+  <img class="stone" src="map/stones/stepan_closed.png" alt="">
+  <svg class="stone-eyes" viewBox="0 0 160 180" aria-hidden="true"><g fill="#f9f0dc" stroke="#514d48" stroke-width="2.5"><ellipse cx="59" cy="100" rx="11" ry="9"/><ellipse cx="101" cy="100" rx="11" ry="9"/></g><g class="pupils"><circle cx="59" cy="100" r="5" fill="#252525"/><circle cx="101" cy="100" r="5" fill="#252525"/><circle cx="57" cy="98" r="1.5" fill="white"/><circle cx="99" cy="98" r="1.5" fill="white"/></g></svg>
+</div>
+<div id="vasilisa" class="resident changed" role="button" tabindex="0" aria-label="Василиса Камушкина, садовник">
+  <img class="alive" src="map/characters/vasilisa_alive.webp" alt="">
+  <img class="stone" src="map/stones/vasilisa_closed.png" alt="">
+  <svg class="stone-eyes" viewBox="0 0 160 180" aria-hidden="true"><g fill="#f9f0dc" stroke="#514d48" stroke-width="2.5"><ellipse cx="59" cy="100" rx="11" ry="9"/><ellipse cx="101" cy="100" rx="11" ry="9"/></g><g class="pupils"><circle cx="59" cy="100" r="5" fill="#252525"/><circle cx="101" cy="100" r="5" fill="#252525"/><circle cx="57" cy="98" r="1.5" fill="white"/><circle cx="99" cy="98" r="1.5" fill="white"/></g></svg>
+</div>
+<div id="luka" class="resident changed" role="button" tabindex="0" aria-label="Лука Щебёнкин, сторож">
+  <img class="alive" src="map/characters/luka_alive.webp" alt="">
+  <img class="stone" src="map/stones/luka_closed.png" alt="">
+  <svg class="stone-eyes" viewBox="0 0 160 180" aria-hidden="true"><g fill="#f9f0dc" stroke="#514d48" stroke-width="2.5"><ellipse cx="59" cy="100" rx="11" ry="9"/><ellipse cx="101" cy="100" rx="11" ry="9"/></g><g class="pupils"><circle cx="59" cy="100" r="5" fill="#252525"/><circle cx="101" cy="100" r="5" fill="#252525"/><circle cx="57" cy="98" r="1.5" fill="white"/><circle cx="99" cy="98" r="1.5" fill="white"/></g></svg>
+</div>
+<div id="darya" class="resident changed" role="button" tabindex="0" aria-label="Дарья Копейкина, хозяйка лавки">
+  <img class="alive" src="map/characters/darya_alive.webp" alt="">
+  <img class="stone" src="map/stones/darya_closed.png" alt="">
+  <svg class="stone-eyes" viewBox="0 0 160 180" aria-hidden="true"><g fill="#f9f0dc" stroke="#514d48" stroke-width="2.5"><ellipse cx="59" cy="100" rx="11" ry="9"/><ellipse cx="101" cy="100" rx="11" ry="9"/></g><g class="pupils"><circle cx="59" cy="100" r="5" fill="#252525"/><circle cx="101" cy="100" r="5" fill="#252525"/><circle cx="57" cy="98" r="1.5" fill="white"/><circle cx="99" cy="98" r="1.5" fill="white"/></g></svg>
+</div>
+<div id="foma" class="resident changed" role="button" tabindex="0" aria-label="Фома Знаменский, картограф">
+  <img class="alive" src="map/characters/foma_alive.webp" alt="">
+  <img class="stone" src="map/stones/foma_closed.png" alt="">
+  <svg class="stone-eyes" viewBox="0 0 160 180" aria-hidden="true"><g fill="#f9f0dc" stroke="#514d48" stroke-width="2.5"><ellipse cx="59" cy="100" rx="11" ry="9"/><ellipse cx="101" cy="100" rx="11" ry="9"/></g><g class="pupils"><circle cx="59" cy="100" r="5" fill="#252525"/><circle cx="101" cy="100" r="5" fill="#252525"/><circle cx="57" cy="98" r="1.5" fill="white"/><circle cx="99" cy="98" r="1.5" fill="white"/></g></svg>
+</div>
+<div id="kuzma" class="resident changed" role="button" tabindex="0" aria-label="Кузьма Лаптев, изобретатель">
+  <img class="alive" src="map/characters/kuzma_alive.webp" alt="">
+  <img class="stone" src="map/stones/kuzma_closed.png" alt="">
+  <svg class="stone-eyes" viewBox="0 0 160 180" aria-hidden="true"><g fill="#f9f0dc" stroke="#514d48" stroke-width="2.5"><ellipse cx="59" cy="100" rx="11" ry="9"/><ellipse cx="101" cy="100" rx="11" ry="9"/></g><g class="pupils"><circle cx="59" cy="100" r="5" fill="#252525"/><circle cx="101" cy="100" r="5" fill="#252525"/><circle cx="57" cy="98" r="1.5" fill="white"/><circle cx="99" cy="98" r="1.5" fill="white"/></g></svg>
+</div>
+<div id="miron" class="resident changed" role="button" tabindex="0" aria-label="Мирон Звонарёв, музыкант">
+  <img class="alive" src="map/characters/miron_alive.webp" alt="">
+  <img class="stone" src="map/stones/miron_closed.png" alt="">
+  <svg class="stone-eyes" viewBox="0 0 160 180" aria-hidden="true"><g fill="#f9f0dc" stroke="#514d48" stroke-width="2.5"><ellipse cx="59" cy="100" rx="11" ry="9"/><ellipse cx="101" cy="100" rx="11" ry="9"/></g><g class="pupils"><circle cx="59" cy="100" r="5" fill="#252525"/><circle cx="101" cy="100" r="5" fill="#252525"/><circle cx="57" cy="98" r="1.5" fill="white"/><circle cx="99" cy="98" r="1.5" fill="white"/></g></svg>
+</div>
+<div id="nikifor" class="resident changed" role="button" tabindex="0" aria-label="Никифор Гудков, пасечник">
+  <img class="alive" src="map/characters/nikifor_alive.webp" alt="">
+  <img class="stone" src="map/stones/nikifor_closed.png" alt="">
+  <svg class="stone-eyes" viewBox="0 0 160 180" aria-hidden="true"><g fill="#f9f0dc" stroke="#514d48" stroke-width="2.5"><ellipse cx="59" cy="100" rx="11" ry="9"/><ellipse cx="101" cy="100" rx="11" ry="9"/></g><g class="pupils"><circle cx="59" cy="100" r="5" fill="#252525"/><circle cx="101" cy="100" r="5" fill="#252525"/><circle cx="57" cy="98" r="1.5" fill="white"/><circle cx="99" cy="98" r="1.5" fill="white"/></g></svg>
+</div>
+<div id="taisiya" class="resident changed" role="button" tabindex="0" aria-label="Таисия Архипова, библиотекарь">
+  <img class="alive" src="map/characters/taisiya_alive.webp" alt="">
+  <img class="stone" src="map/stones/taisiya_closed.png" alt="">
+  <svg class="stone-eyes" viewBox="0 0 160 180" aria-hidden="true"><g fill="#f9f0dc" stroke="#514d48" stroke-width="2.5"><ellipse cx="59" cy="100" rx="11" ry="9"/><ellipse cx="101" cy="100" rx="11" ry="9"/></g><g class="pupils"><circle cx="59" cy="100" r="5" fill="#252525"/><circle cx="101" cy="100" r="5" fill="#252525"/><circle cx="57" cy="98" r="1.5" fill="white"/><circle cx="99" cy="98" r="1.5" fill="white"/></g></svg>
+</div>
+<div id="elisey" class="resident changed" role="button" tabindex="0" aria-label="Елисей Перевалов, путешественник">
+  <img class="alive" src="map/characters/elisey_alive.webp" alt="">
+  <img class="stone" src="map/stones/elisey_closed.png" alt="">
+  <svg class="stone-eyes" viewBox="0 0 160 180" aria-hidden="true"><g fill="#f9f0dc" stroke="#514d48" stroke-width="2.5"><ellipse cx="59" cy="100" rx="11" ry="9"/><ellipse cx="101" cy="100" rx="11" ry="9"/></g><g class="pupils"><circle cx="59" cy="100" r="5" fill="#252525"/><circle cx="101" cy="100" r="5" fill="#252525"/><circle cx="57" cy="98" r="1.5" fill="white"/><circle cx="99" cy="98" r="1.5" fill="white"/></g></svg>
+</div>
+<div id="saveliy" class="resident changed" role="button" tabindex="0" aria-label="Савелий Уступкин, староста">
+  <img class="alive" src="map/characters/saveliy_alive.webp" alt="">
+  <img class="stone" src="map/stones/saveliy_closed.png" alt="">
+  <svg class="stone-eyes" viewBox="0 0 160 180" aria-hidden="true"><g fill="#f9f0dc" stroke="#514d48" stroke-width="2.5"><ellipse cx="59" cy="100" rx="11" ry="9"/><ellipse cx="101" cy="100" rx="11" ry="9"/></g><g class="pupils"><circle cx="59" cy="100" r="5" fill="#252525"/><circle cx="101" cy="100" r="5" fill="#252525"/><circle cx="57" cy="98" r="1.5" fill="white"/><circle cx="99" cy="98" r="1.5" fill="white"/></g></svg>
+</div>
 <img src="village_foreground.png" id="village-foreground" alt="" aria-hidden="true">
 <img src="village_foreground.png" id="marfa-foreground" alt="" aria-hidden="true">
 <svg id="eye" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 24Q24 1 45 24Q24 47 3 24Z" fill="#f8e5bb" stroke="#57351d" stroke-width="3"/><circle cx="24" cy="24" r="10" fill="#77a9a7" stroke="#57351d" stroke-width="2"/><circle cx="24" cy="24" r="5" fill="#2c302d"/><circle cx="21" cy="21" r="2.5" fill="white"/></svg>
 </div></div>
 <div class="mobile-controls"><button id="toggle-map" type="button" aria-pressed="false">Показать всю деревню</button></div>
 <p class="note">На компьютере наведи глаз на жителя. На телефоне двигай карту пальцем и нажимай на жителей, чтобы увидеть их превращение.</p>
+<section class="editor-panel" id="editor-panel" aria-label="Редактор координат">
+  <h2>Расстановка жителей на карте</h2>
+  <p class="editor-hint">Перетаскивай персонажей мышью или пальцем. Изменения видны сразу, но сохраняются в GitHub только после вставки координат в index.html. Старые координаты Тимофея, Марфы и Прохора не меняются, пока ты сам их не передвинешь.</p>
+  <div class="editor-row"><label for="edit-person">Житель:</label><select id="edit-person"></select><label for="edit-size">Размер:</label><input id="edit-size" type="range" min="1" max="12" step="0.05"><output id="size-output"></output><button id="edit-reset" type="button">Вернуть начальные</button></div>
+  <div class="editor-row"><strong id="edit-position"></strong><button id="edit-copy-one" type="button">Копировать выбранного</button><button id="edit-copy-all" type="button">Копировать все координаты</button></div>
+  <pre id="edit-css"></pre>
+  <p class="editor-hint">В GitHub вставь скопированные CSS-строки в блок &lt;style&gt; главной страницы, заменив прежние правила #имя. Можно временно подбирать позиции без сохранения: после перезагрузки редактор восстановит их в этом браузере.</p>
+</section>
 <script>
 const scene=document.getElementById('scene'),eye=document.getElementById('eye');
+const editing = new URLSearchParams(location.search).get('edit') === '1';
+if(editing) document.body.classList.add('edit-mode');
 function setupResident(person){
+  if(editing) { person.className = 'resident'; return; }
   let timers=[],watching=false;
   const clear=()=>{timers.forEach(clearTimeout);timers=[]};
   const later=(fn,ms)=>timers.push(setTimeout(fn,ms));
@@ -122,4 +233,88 @@ const mapImage=scene.querySelector('.map');
 if(mapImage.complete)requestAnimationFrame(centerMobileMap);
 else mapImage.addEventListener('load',centerMobileMap,{once:true});
 mobileQuery.addEventListener('change',()=>{if(mobileQuery.matches)centerMobileMap();else setOverview(false)});
+
+// Режим редактирования: index.html?edit=1 (не активен для обычных посетителей).
+function initializePositionEditor() {
+  const list = [...document.querySelectorAll('.resident')];
+  const select = document.getElementById('edit-person');
+  const slider = document.getElementById('edit-size');
+  const sizeOutput = document.getElementById('size-output');
+  const position = document.getElementById('edit-position');
+  const css = document.getElementById('edit-css');
+  const storeKey = 'galkino-map-positions-v1';
+  const starting = Object.fromEntries(list.map(p => [p.id, {
+    left: parseFloat(getComputedStyle(p).left) / scene.clientWidth * 100,
+    top: parseFloat(getComputedStyle(p).top) / scene.clientHeight * 100,
+    width: parseFloat(getComputedStyle(p).width) / scene.clientWidth * 100
+  }]));
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(storeKey) || '{}') || {}; } catch(e) {}
+  const positions = Object.fromEntries(list.map(p => [p.id, {...starting[p.id], ...(saved[p.id] || {})}]));
+  const fmt = n => Number(n).toFixed(2).replace(/\.?0+$/, '');
+  const rule = id => `#${id}{left:${fmt(positions[id].left)}%;top:${fmt(positions[id].top)}%;width:${fmt(positions[id].width)}%}`;
+  const write = () => { try { localStorage.setItem(storeKey, JSON.stringify(positions)); } catch(e) {} };
+  const apply = id => {
+    const p = document.getElementById(id), v = positions[id];
+    p.style.left = v.left + '%'; p.style.top = v.top + '%'; p.style.width = v.width + '%';
+  };
+  let selected = list[0].id;
+  list.forEach(p => {
+    const option = document.createElement('option');
+    option.value = p.id;
+    option.textContent = p.getAttribute('aria-label').split(',')[0];
+    select.append(option);
+    apply(p.id);
+  });
+  const refresh = () => {
+    list.forEach(p => p.classList.toggle('selected', p.id === selected));
+    select.value = selected;
+    slider.value = positions[selected].width;
+    sizeOutput.textContent = fmt(positions[selected].width) + '%';
+    position.textContent = `X: ${fmt(positions[selected].left)}% · Y: ${fmt(positions[selected].top)}%`;
+    css.textContent = rule(selected);
+  };
+  const choose = id => { selected = id; refresh(); };
+  select.addEventListener('change', () => choose(select.value));
+  slider.addEventListener('input', () => {
+    positions[selected].width = Number(slider.value);
+    apply(selected); write(); refresh();
+  });
+  let dragging = null;
+  list.forEach(p => p.addEventListener('pointerdown', e => {
+    if(e.button !== 0 && e.pointerType === 'mouse') return;
+    e.preventDefault(); e.stopPropagation();
+    choose(p.id); dragging = p;
+    p.classList.add('dragging'); p.setPointerCapture(e.pointerId);
+  }));
+  list.forEach(p => p.addEventListener('pointermove', e => {
+    if(dragging !== p) return;
+    const rect = scene.getBoundingClientRect();
+    positions[p.id].left = Math.max(0, Math.min(100, (e.clientX - rect.left) / rect.width * 100));
+    positions[p.id].top = Math.max(0, Math.min(100, (e.clientY - rect.top) / rect.height * 100));
+    apply(p.id); refresh();
+  }));
+  const stop = p => { if(dragging === p) { dragging = null; p.classList.remove('dragging'); write(); } };
+  list.forEach(p => {
+    p.addEventListener('pointerup', () => stop(p));
+    p.addEventListener('pointercancel', () => stop(p));
+  });
+  async function copyCoords(content) {
+    try { await navigator.clipboard.writeText(content); css.textContent = content + '\n\nСкопировано!'; }
+    catch(e) { css.textContent = content + '\n\nВыдели текст выше и скопируй вручную.'; }
+  }
+  document.getElementById('edit-copy-one').addEventListener('click', () => copyCoords(rule(selected)));
+  document.getElementById('edit-copy-all').addEventListener('click', () => copyCoords(list.map(p => rule(p.id)).join('\n')));
+  document.getElementById('edit-reset').addEventListener('click', () => {
+    if(!confirm('Вернуть все координаты и размеры к значениям из HTML?')) return;
+    list.forEach(p => { positions[p.id] = {...starting[p.id]}; apply(p.id); });
+    try { localStorage.removeItem(storeKey); } catch(e) {}
+    refresh();
+  });
+  refresh();
+}
+if (editing) {
+  if (mapImage.complete && mapImage.naturalWidth > 0) initializePositionEditor();
+  else mapImage.addEventListener('load', initializePositionEditor, {once:true});
+}
 </script></body></html>
