@@ -44,21 +44,6 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 #village-foreground{clip-path:inset(0 78% 0 0)}
 #marfa-foreground{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;display:none;clip-path:inset(32% 36% 60% 56%)}
 .scene.marfa-front-visible #marfa-foreground{display:block}
-/* Передние планы: показываем реальные участки village.png поверх ног жителей.
-   clip-path задаётся в процентах полной карты, чтобы работало и на телефоне.
-   По умолчанию приблизительные маски: при необходимости границы уточняются здесь. */
-.map-front-part{position:absolute;inset:0;width:100%;height:100%;
-  background-image:url('village.png');background-size:100% 100%;background-repeat:no-repeat;
-  pointer-events:none;z-index:3}
-/* Забор пасеки Никифора */
-#nikifor-front{clip-path:polygon(6.2% 72.3%,7.9% 71.8%,9.5% 72.6%,11.5% 72.0%,13.7% 72.2%,16.5% 73.3%,16.5% 77.1%,6.2% 77.1%)}
-/* Оградка сада у Мирона */
-#miron-front{clip-path:polygon(57.5% 70.5%,59.5% 70.1%,61.5% 70.8%,63.5% 70.3%,65.9% 71.1%,67.7% 71.6%,67.7% 75.8%,57.5% 75.8%)}
-/* Забор кузницы Степана */
-#stepan-front{clip-path:polygon(73.2% 62.4%,75.0% 62.0%,77.2% 62.7%,79.6% 62.1%,82.2% 62.6%,84.1% 63.6%,84.1% 67.2%,73.2% 67.2%)}
-/* В редакторе удобно видеть, что заслоняет персонажа. */
-.edit-mode .map-front-part{opacity:.55}
-
 /* На компьютере обёртка не меняет внешний вид карты. */
 .map-viewport{width:100%}
 .mobile-controls{display:none}
@@ -187,10 +172,6 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 </div>
 <img src="village_foreground.png" id="village-foreground" alt="" aria-hidden="true">
 <img src="village_foreground.png" id="marfa-foreground" alt="" aria-hidden="true">
-<!-- Передний план из участков основной карты: без дополнительных файлов -->
-<div id="nikifor-front" class="map-front-part" aria-hidden="true"></div>
-<div id="miron-front" class="map-front-part" aria-hidden="true"></div>
-<div id="stepan-front" class="map-front-part" aria-hidden="true"></div>
 <svg id="eye" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 24Q24 1 45 24Q24 47 3 24Z" fill="#f8e5bb" stroke="#57351d" stroke-width="3"/><circle cx="24" cy="24" r="10" fill="#77a9a7" stroke="#57351d" stroke-width="2"/><circle cx="24" cy="24" r="5" fill="#2c302d"/><circle cx="21" cy="21" r="2.5" fill="white"/></svg>
 </div></div>
 <div class="mobile-controls"><button id="toggle-map" type="button" aria-pressed="false">Показать всю деревню</button></div>
