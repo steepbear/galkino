@@ -71,7 +71,17 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 .topbar a:hover,.topbar a:focus-visible{background:#dbb87f;text-decoration:underline}
 .topbar .home-link{font-weight:800;margin-right:auto}
 .topbar .buy-link{margin-left:auto;color:#ffebc4;background:linear-gradient(#84522d,#58331d);border:3px ridge #b98b52;box-shadow:2px 3px 3px #60422580;padding:9px 16px}
-@media(max-width:700px){.topbar{gap:2px;padding:7px 5px}.topbar .home-link{width:100%;margin:0}.topbar .buy-link{margin:4px auto}.topbar a{font-size:14px;padding:7px 6px}}
+@media(max-width:700px){
+  .topbar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:0;row-gap:2px;padding:8px 12px 12px;justify-items:stretch}
+  .topbar a{display:flex;align-items:center;justify-content:center;min-width:0;margin:0;font-size:14px;padding:9px 4px;text-align:center}
+  .topbar .home-link{grid-column:1 / -1;width:100%;margin:0;font-size:19px;padding:10px 4px 12px}
+  .topbar a[href="about.html"]{grid-column:1;grid-row:2}
+  .topbar a[href="residents.html"]{grid-column:2;grid-row:2}
+  .topbar a[href="contacts.html"]{grid-column:1;grid-row:3}
+  .topbar a[href="gallery.html"]{grid-column:2;grid-row:3}
+  .topbar a[href="how.html"]{grid-column:1 / -1;grid-row:4;justify-self:center;padding:10px 12px}
+  .topbar .buy-link{grid-column:1 / -1;grid-row:5;justify-self:center;margin:5px 0 2px;padding:9px 20px}
+}
 
 /* Редактор размещения включается только через ?edit=1 */
 .editor-panel{display:none;max-width:1000px;margin:12px auto;padding:16px;background:#fff4d9;border:2px solid #b78a51;border-radius:12px;text-align:left;box-shadow:0 4px 14px #66401b20}
