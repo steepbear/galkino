@@ -38,12 +38,8 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 .resident.look-right .pupils{transform:translateX(4px)}
 .resident.changed .alive{opacity:0}
 .resident.changed .stone{opacity:1}
-/* Навес виден только во время каменного состояния Марфы и ещё 150 мс после него. */
+/* Общий неподвижный передний план поверх всех жителей. */
 #village-foreground{position:absolute;left:0;top:0;width:100%;height:100%;z-index:3;pointer-events:none;display:block}
-/* The awning part is a second view of the SAME foreground file, shown only for stone Marfa. */
-#village-foreground{clip-path:inset(0 78% 0 0)}
-#marfa-foreground{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;display:none;clip-path:inset(32% 36% 60% 56%)}
-.scene.marfa-front-visible #marfa-foreground{display:block}
 /* На компьютере обёртка не меняет внешний вид карты. */
 .map-viewport{width:100%}
 .mobile-controls{display:none}
@@ -85,12 +81,12 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 .edit-mode .resident.dragging{cursor:grabbing}
 .edit-mode .resident .alive{opacity:1!important}
 .edit-mode .resident .stone,.edit-mode .resident .stone-eyes{opacity:0!important}
-.edit-mode #village-foreground,.edit-mode #marfa-foreground{pointer-events:none}
+.edit-mode #village-foreground{pointer-events:none}
 .editor-hint{font-size:13px;line-height:1.45}
 </style></head><body>
 <nav class="topbar" aria-label="Разделы сайта"><a class="home-link" href="index.html">✦ Деревня Галькино</a><a href="about.html">О деревне</a><a href="residents.html">Наши жители</a><a href="how.html">Как это работает</a><a href="gallery.html">Галерея</a><a href="contacts.html">Контакты</a><a class="buy-link" href="buy.html">Где купить?</a></nav>
 <header><h1>Деревня Галькино</h1><p>Присмотрись: камни здесь иногда оживают!</p></header>
-<div class="map-viewport" id="map-viewport"><div class="scene marfa-front-visible" id="scene" aria-label="Карта деревни Галькино">
+<div class="map-viewport" id="map-viewport"><div class="scene" id="scene" aria-label="Карта деревни Галькино">
 <img src="village.png" class="map" alt="Карта деревни Галькино">
 <div id="timofey" class="resident changed" role="button" tabindex="0" aria-label="Тимофей Булыжников, почтальон">
 <img class="alive" src="map/characters/timofey_alive.png" alt=""><img class="stone" src="map/stones/timofey_closed.png" alt="">
@@ -171,7 +167,6 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
   <svg class="stone-eyes" viewBox="0 0 160 180" aria-hidden="true"><g fill="#f9f0dc" stroke="#514d48" stroke-width="2.5"><ellipse cx="59" cy="100" rx="11" ry="9"/><ellipse cx="101" cy="100" rx="11" ry="9"/></g><g class="pupils"><circle cx="59" cy="100" r="5" fill="#252525"/><circle cx="101" cy="100" r="5" fill="#252525"/><circle cx="57" cy="98" r="1.5" fill="white"/><circle cx="99" cy="98" r="1.5" fill="white"/></g></svg>
 </div>
 <img src="village_foreground.png" id="village-foreground" alt="" aria-hidden="true">
-<img src="village_foreground.png" id="marfa-foreground" alt="" aria-hidden="true">
 <svg id="eye" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 24Q24 1 45 24Q24 47 3 24Z" fill="#f8e5bb" stroke="#57351d" stroke-width="3"/><circle cx="24" cy="24" r="10" fill="#77a9a7" stroke="#57351d" stroke-width="2"/><circle cx="24" cy="24" r="5" fill="#2c302d"/><circle cx="21" cy="21" r="2.5" fill="white"/></svg>
 </div></div>
 <div class="mobile-controls"><button id="toggle-map" type="button" aria-pressed="false">Показать всю деревню</button></div>
@@ -193,14 +188,12 @@ function setupResident(person){
   let timers=[],watching=false;
   const clear=()=>{timers.forEach(clearTimeout);timers=[]};
   const later=(fn,ms)=>timers.push(setTimeout(fn,ms));
-  function hide(){watching=true;clear();person.className='resident changed';if(person.id==='marfa')scene.classList.add('marfa-front-visible')}
+  function hide(){watching=true;clear();person.className='resident changed'}
   function restore(){watching=false;clear();if(!person.classList.contains('changed'))return;
     later(()=>{if(!watching)person.classList.add('peeking','look-left')},1000);
     later(()=>{if(!watching){person.classList.remove('look-left');person.classList.add('look-right')}},1600);
     later(()=>{if(!watching)person.classList.remove('look-right')},2350);
     later(()=>{if(!watching)person.className='resident'},2850);
-    // Навес исчезает после того, как переход к обычной Марфе завершился (2850 + 120 мс).
-    if(person.id==='marfa')later(()=>{if(!watching)scene.classList.remove('marfa-front-visible')},3000);
   }
   person.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')hide()});
   person.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')restore()});
