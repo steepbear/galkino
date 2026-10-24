@@ -7,6 +7,12 @@
 <title>Василиса Камушкина — Дело о невидимой помощнице | Галькино</title>
 <meta name="description" content="История Василисы Камушкиной, садовника деревни Галькино">
 <link rel="stylesheet" href="stories.css">
+<style>
+/* Навигация между историей, деревней и жителями */
+.story-nav { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:12px; }
+.story-nav .back { display:inline-block; }
+@media(max-width:600px) { .story-nav { flex-direction:column; } .story-nav .back { box-sizing:border-box; width:100%; text-align:center; } }
+</style>
 </head>
 
 <body>
@@ -180,8 +186,9 @@
 
 </article>
 
-<footer>
+<footer class="story-nav">
   <a class="back" href="index.html">← Взглянуть на деревню</a>
+  <a class="back" href="residents.html">Познакомиться с жителями →</a>
 </footer>
 </main>
 

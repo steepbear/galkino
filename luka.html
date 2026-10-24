@@ -13,6 +13,12 @@
 .story-figure figcaption{margin-top:10px;font-size:14px;line-height:1.5;color:#6b4a2d;}
 .story-figure .file-note{display:block;font-size:12px;opacity:.8;margin-top:4px;}
 </style>
+<style>
+/* Навигация между историей, деревней и жителями */
+.story-nav { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:12px; }
+.story-nav .back { display:inline-block; }
+@media(max-width:600px) { .story-nav { flex-direction:column; } .story-nav .back { box-sizing:border-box; width:100%; text-align:center; } }
+</style>
 </head>
 <body>
 <div class="top">ГАЛЬКИНО · ПОЧТОВЫЙ АРХИВ</div>
@@ -102,7 +108,10 @@
 <p>В Почтовом архиве Галькино позднее появилась запись:</p>
 <p class="archive-quote">«Лука Щебёнкин, сторож. Первое собрание проспал после трёх ночей подготовки. На следующем выступил с короткой речью и выслушал соседей. Вывод: предусмотрительность помогает, когда помнишь не только о возможных неприятностях, но и о собственном отдыхе».</p>
 </article>
-<footer><a class="back" href="index.html">← Взглянуть на деревню</a></footer>
+<footer class="story-nav">
+  <a class="back" href="index.html">← Взглянуть на деревню</a>
+  <a class="back" href="residents.html">Познакомиться с жителями →</a>
+</footer>
 </main>
 <div class="footer-mark">Галькино · маленькая деревня больших историй</div>
 </body>
