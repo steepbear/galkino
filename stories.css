@@ -1,0 +1,174 @@
+/* Галькино — общие стили страниц историй.
+   Хранятся в корне репозитория, рядом с timofey.html, vasilisa.html, taisiya.html. */
+
+:root {
+  --ink: #513c2c;
+  --rust: #925b35;
+  --paper: #fff9e9;
+  --line: #d8b985;
+
+  /* Скругление всех сюжетных иллюстраций во всех историях */
+  --illustration-radius: 18px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background: radial-gradient(ellipse at top, #f9edce, #e8d6ae 75%);
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+/* Шапка и бумажная карточка */
+.top {
+  padding: 24px 15px 10px;
+  text-align: center;
+  letter-spacing: .16em;
+  color: var(--rust);
+  font-size: .72rem;
+  font-weight: bold;
+}
+
+.paper {
+  max-width: 900px;
+  margin: 14px auto 30px;
+  padding: clamp(20px, 5vw, 65px);
+  background: var(--paper);
+  border: 1px solid #d6b77e;
+  border-radius: 10px;
+  box-shadow: 0 12px 35px #74533030;
+}
+
+.kicker {
+  text-align: center;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  font-size: .75rem;
+  color: var(--rust);
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 3.15rem);
+  text-align: center;
+  line-height: 1.15;
+  margin: 14px 0 8px;
+}
+
+.subtitle {
+  text-align: center;
+  font-style: italic;
+  color: #8d6b4b;
+  margin-bottom: 24px;
+}
+
+.rule {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--line), transparent);
+  margin: 24px 0;
+}
+
+/* Портрет и данные жителя */
+.profile {
+  display: grid;
+  grid-template-columns: minmax(180px, 270px) 1fr;
+  align-items: center;
+  gap: 30px;
+  margin: 26px 0;
+}
+
+.profile img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 8px 10px #52351d24);
+}
+
+.profile h2 { font-size: 1.55rem; margin: 0 0 14px; }
+.profile p { margin: 9px 0; line-height: 1.6; }
+.label { font-weight: bold; color: #845332; }
+
+/* История */
+.story-title {
+  font-size: 1.65rem;
+  text-align: center;
+  margin: 34px 0 20px;
+  line-height: 1.35;
+}
+
+.story p {
+  font-size: clamp(1.03rem, 2.2vw, 1.15rem);
+  line-height: 1.85;
+  margin: 0 0 1em;
+  text-indent: 1.4em;
+  text-align: left;
+  hyphens: auto;
+  overflow-wrap: break-word;
+}
+
+.story figure {
+  margin: 25px auto 30px;
+  max-width: 740px;
+}
+
+.story figure img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 5px solid #f5e8c8;
+  box-shadow: 0 4px 16px #6e4b2630;
+  border-radius: var(--illustration-radius);
+}
+
+/* Разделение эпизодов, как у Василисы */
+.story .scene-break {
+  text-indent: 0;
+  text-align: center;
+  letter-spacing: .5em;
+  color: var(--rust);
+  margin: 25px 0;
+}
+
+/* Запись из Почтового архива */
+.story .archive-quote {
+  font-style: italic;
+  background: #f6ead0;
+  border-left: 3px solid var(--rust);
+  padding: 12px 18px;
+  text-indent: 0;
+  margin-bottom: 1em;
+}
+/* Соседние абзацы одной архивной записи прилегают друг к другу. */
+.story .archive-quote:has(+ .archive-follow) { margin-bottom: 0; }
+.story .archive-follow { padding-top: 0; }
+
+footer { text-align: center; margin-top: 35px; }
+.back {
+  display: inline-block;
+  color: #fffaf0;
+  background: #765039;
+  border-radius: 50px;
+  padding: 14px 28px;
+  text-decoration: none;
+  font-weight: bold;
+  line-height: 1.3;
+}
+.back:hover, .back:focus-visible { background: #56351d; }
+.footer-mark {
+  font-size: .78rem;
+  color: #9b7d5b;
+  text-align: center;
+  padding: 0 10px 28px;
+}
+
+/* Телефон */
+@media (max-width: 580px) {
+  .paper { margin: 8px 10px 25px; padding: 22px 18px; }
+  .profile { grid-template-columns: 1fr; gap: 4px; }
+  .profile img { max-width: 230px; margin: auto; }
+  .story p { text-indent: .8em; line-height: 1.75; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
