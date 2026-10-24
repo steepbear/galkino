@@ -36,8 +36,8 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 .resident{position:absolute;transform:translate(-50%,-50%);aspect-ratio:160/180;cursor:none;user-select:none;-webkit-tap-highlight-color:transparent;z-index:2}
 .resident img{position:absolute;width:100%;height:100%;object-fit:contain;left:0;top:0;pointer-events:none;transition:opacity .12s}
  .resident .stone,.resident .stone-eyes{opacity:0}
-.resident .stone{transform:translateY(var(--stone-y, 0%))}
-.resident .stone-eyes{transform:translateY(var(--stone-y, 0%));position:absolute;inset:0;width:100%;height:100%;pointer-events:none;transition:opacity .12s}
+.resident .stone{transform:translate(var(--stone-x, 0%),var(--stone-y, 0%))}
+.resident .stone-eyes{transform:translate(var(--stone-x, 0%),var(--stone-y, 0%));position:absolute;inset:0;width:100%;height:100%;pointer-events:none;transition:opacity .12s}
 .resident.peeking .stone-eyes{opacity:1}
 .resident .pupils{transition:transform .22s ease}
 .resident.look-left .pupils{transform:translateX(-4px)}
@@ -85,6 +85,8 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 .edit-mode .resident{cursor:grab;touch-action:none;outline:1px dashed #fff9;outline-offset:2px;z-index:4}
 .edit-mode .resident.selected{outline:3px solid #ffc31e;z-index:6}
 .edit-mode .resident.dragging{cursor:grabbing}
+.edit-mode.stone-drag-mode .resident{cursor:move}
+.edit-mode.stone-drag-mode .resident.selected{outline:2px dashed #38c6ff;outline-offset:5px}
 .edit-mode .resident .alive{opacity:1!important}
 .edit-mode .resident .stone,.edit-mode .resident .stone-eyes{opacity:0!important}
 .edit-mode .resident.preview-stone .alive{opacity:0!important}
@@ -183,10 +185,11 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
   <h2>Расстановка жителей на карте</h2>
   <p class="editor-hint">Перетаскивай персонажей мышью или пальцем. Для камня включи «Показать камень» и двигай ползунок «Камень ↕»: плюс опускает камень к ногам, минус поднимает. Его X остаётся в центре персонажа. Изменения видны сразу, но сохраняются в GitHub только после вставки координат в index.html. Все текущие координаты 16 жителей сохранены. Перетаскивание и подбор размеров работают как прежде.</p>
   <div class="editor-row"><label for="edit-person">Житель:</label><select id="edit-person"></select><label for="edit-size">Размер:</label><input id="edit-size" type="range" min="1" max="12" step="0.05"><output id="size-output"></output><button id="edit-reset" type="button">Вернуть начальные</button></div>
-  <div class="editor-row"><label for="edit-stone-y">Камень ↕:</label><input id="edit-stone-y" type="range" min="-70" max="70" step="1" value="0"><output id="stone-y-output"></output><label><input id="edit-preview-stone" type="checkbox"> Показать камень выбранного жителя</label></div>
+  <div class="editor-row"><label for="edit-drag-mode">Перетаскивание:</label><select id="edit-drag-mode"><option value="resident">Персонаж</option><option value="stone">Только камень</option></select><span class="editor-hint">В режиме камня положение персонажа не меняется.</span></div>
+  <div class="editor-row"><label for="edit-stone-x">Камень ↔:</label><input id="edit-stone-x" type="range" min="-150" max="150" step="1" value="0"><output id="stone-x-output"></output><label for="edit-stone-y">Камень ↕:</label><input id="edit-stone-y" type="range" min="-70" max="70" step="1" value="0"><output id="stone-y-output"></output><label><input id="edit-preview-stone" type="checkbox"> Показать камень выбранного жителя</label></div>
   <div class="editor-row"><strong id="edit-position"></strong><button id="edit-copy-one" type="button">Копировать выбранного</button><button id="edit-copy-all" type="button">Копировать все координаты</button></div>
   <pre id="edit-css"></pre>
-  <p class="editor-hint">В GitHub вставь скопированные CSS-строки в блок &lt;style&gt; главной страницы, заменив прежние правила #имя. Поправка --stone-y тоже копируется и сохраняется. Можно временно подбирать позиции без сохранения: после перезагрузки редактор восстановит их в этом браузере.</p>
+  <p class="editor-hint">В GitHub вставь скопированные CSS-строки в блок &lt;style&gt; главной страницы, заменив прежние правила #имя. Поправки --stone-x и --stone-y тоже копируются и сохраняются. В режиме «Только камень» перетаскивание не меняет координаты персонажа. Можно временно подбирать позиции без сохранения: после перезагрузки редактор восстановит их в этом браузере.</p>
 </section>
 <script>
 const scene=document.getElementById('scene'),eye=document.getElementById('eye');
@@ -252,6 +255,9 @@ function initializePositionEditor() {
   const list = [...document.querySelectorAll('.resident')];
   const select = document.getElementById('edit-person');
   const slider = document.getElementById('edit-size');
+  const dragMode = document.getElementById('edit-drag-mode');
+  const stoneXSlider = document.getElementById('edit-stone-x');
+  const stoneXOutput = document.getElementById('stone-x-output');
   const stoneSlider = document.getElementById('edit-stone-y');
   const stoneOutput = document.getElementById('stone-y-output');
   const previewStone = document.getElementById('edit-preview-stone');
@@ -263,17 +269,18 @@ function initializePositionEditor() {
     left: parseFloat(getComputedStyle(p).left) / scene.clientWidth * 100,
     top: parseFloat(getComputedStyle(p).top) / scene.clientHeight * 100,
     width: parseFloat(getComputedStyle(p).width) / scene.clientWidth * 100,
+    stoneX: parseFloat(getComputedStyle(p).getPropertyValue('--stone-x')) || 0,
     stoneY: parseFloat(getComputedStyle(p).getPropertyValue('--stone-y')) || 0
   }]));
   let saved = {};
   try { saved = JSON.parse(localStorage.getItem(storeKey) || '{}') || {}; } catch(e) {}
   const positions = Object.fromEntries(list.map(p => [p.id, {...starting[p.id], ...(saved[p.id] || {})}]));
   const fmt = n => Number(n).toFixed(2).replace(/\.?0+$/, '');
-  const rule = id => `#${id}{left:${fmt(positions[id].left)}%;top:${fmt(positions[id].top)}%;width:${fmt(positions[id].width)}%;--stone-y:${fmt(positions[id].stoneY)}%}`;
+  const rule = id => `#${id}{left:${fmt(positions[id].left)}%;top:${fmt(positions[id].top)}%;width:${fmt(positions[id].width)}%;--stone-x:${fmt(positions[id].stoneX || 0)}%;--stone-y:${fmt(positions[id].stoneY)}%}`;
   const write = () => { try { localStorage.setItem(storeKey, JSON.stringify(positions)); } catch(e) {} };
   const apply = id => {
     const p = document.getElementById(id), v = positions[id];
-    p.style.left = v.left + '%'; p.style.top = v.top + '%'; p.style.width = v.width + '%'; p.style.setProperty('--stone-y', v.stoneY + '%');
+    p.style.left = v.left + '%'; p.style.top = v.top + '%'; p.style.width = v.width + '%'; p.style.setProperty('--stone-x', (v.stoneX || 0) + '%'); p.style.setProperty('--stone-y', v.stoneY + '%');
   };
   let selected = list[0].id;
   list.forEach(p => {
@@ -287,6 +294,8 @@ function initializePositionEditor() {
     list.forEach(p => p.classList.toggle('selected', p.id === selected));
     list.forEach(p=>p.classList.toggle('preview-stone', previewStone.checked && p.id === selected));
     select.value = selected;
+    stoneXSlider.value = positions[selected].stoneX || 0;
+    stoneXOutput.textContent = fmt(positions[selected].stoneX || 0) + '%';
     stoneSlider.value = positions[selected].stoneY;
     stoneOutput.textContent = fmt(positions[selected].stoneY) + '%';
     slider.value = positions[selected].width;
@@ -297,6 +306,12 @@ function initializePositionEditor() {
   const choose = id => { selected = id; refresh(); };
   select.addEventListener('change', () => choose(select.value));
   previewStone.addEventListener('change', refresh);
+  dragMode.addEventListener('change', () => {
+    document.body.classList.toggle('stone-drag-mode', dragMode.value === 'stone');
+    if(dragMode.value === 'stone') previewStone.checked = true;
+    refresh();
+  });
+  stoneXSlider.addEventListener('input', () => {positions[selected].stoneX=Number(stoneXSlider.value);previewStone.checked=true;apply(selected);write();refresh();});
   stoneSlider.addEventListener('input', () => {positions[selected].stoneY=Number(stoneSlider.value);previewStone.checked=true;apply(selected);write();refresh();});
   slider.addEventListener('input', () => {
     positions[selected].width = Number(slider.value);
@@ -306,17 +321,32 @@ function initializePositionEditor() {
   list.forEach(p => p.addEventListener('pointerdown', e => {
     if(e.button !== 0 && e.pointerType === 'mouse') return;
     e.preventDefault(); e.stopPropagation();
-    choose(p.id); dragging = p;
+    choose(p.id);
+    const stoneMode = dragMode.value === 'stone';
+    if(stoneMode) { previewStone.checked = true; refresh(); }
+    // Keep the original offsets; drag only the chosen layer using pointer delta.
+    dragging = {person:p, mode:dragMode.value, startX:e.clientX, startY:e.clientY,
+      left:positions[p.id].left, top:positions[p.id].top,
+      stoneX:positions[p.id].stoneX || 0, stoneY:positions[p.id].stoneY || 0};
     p.classList.add('dragging'); p.setPointerCapture(e.pointerId);
   }));
   list.forEach(p => p.addEventListener('pointermove', e => {
-    if(dragging !== p) return;
+    if(!dragging || dragging.person !== p) return;
     const rect = scene.getBoundingClientRect();
-    positions[p.id].left = Math.max(0, Math.min(100, (e.clientX - rect.left) / rect.width * 100));
-    positions[p.id].top = Math.max(0, Math.min(100, (e.clientY - rect.top) / rect.height * 100));
+    const dx = e.clientX - dragging.startX, dy = e.clientY - dragging.startY;
+    if(dragging.mode === 'stone') {
+      // CSS translate percentages are relative to the resident image dimensions.
+      const w = p.getBoundingClientRect().width;
+      const h = p.getBoundingClientRect().height;
+      positions[p.id].stoneX = Math.max(-500, Math.min(500, dragging.stoneX + dx / w * 100));
+      positions[p.id].stoneY = Math.max(-500, Math.min(500, dragging.stoneY + dy / h * 100));
+    } else {
+      positions[p.id].left = Math.max(0, Math.min(100, dragging.left + dx / rect.width * 100));
+      positions[p.id].top = Math.max(0, Math.min(100, dragging.top + dy / rect.height * 100));
+    }
     apply(p.id); refresh();
   }));
-  const stop = p => { if(dragging === p) { dragging = null; p.classList.remove('dragging'); write(); } };
+  const stop = p => { if(dragging?.person === p) { dragging = null; p.classList.remove('dragging'); write(); } };
   list.forEach(p => {
     p.addEventListener('pointerup', () => stop(p));
     p.addEventListener('pointercancel', () => stop(p));
