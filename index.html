@@ -8,7 +8,12 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 .map{display:block;width:100%;height:auto}
 #eye{position:absolute;left:0;top:0;pointer-events:none;transform:translate(-50%,-50%);width:45px;height:45px;display:none;filter:drop-shadow(1px 2px 2px #4b311b80);z-index:5}
 .scene:hover #eye{display:block}
-/* Координаты жителей: меняй left, top и width */
+/* Карта раскрывается только после готовности изображений */
+.scene:not(.assets-ready) > img,.scene:not(.assets-ready) > .resident,.scene:not(.assets-ready) > #eye{visibility:hidden!important}
+.scene:not(.assets-ready)::after{content:"Загружаем деревню…";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#e8d4a9;color:#56351d;font:bold clamp(18px,2.4vw,30px) Georgia,serif;z-index:10}
+.scene.assets-ready{animation:scene-appear .3s ease-out}
+@keyframes scene-appear{from{opacity:.35}to{opacity:1}}
+/* Координаты жителей: left, top, width; --stone-y — отдельный сдвиг камня вниз (+) или вверх (-), в % его высоты */
 #timofey{left:23.7%;top:42%;width:3.44%}
 #marfa{left:62.8%;top:33.7%;width:3.44%}
 /* Прохор у мельницы: здесь можно изменить положение */
@@ -31,7 +36,8 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 .resident{position:absolute;transform:translate(-50%,-50%);aspect-ratio:160/180;cursor:none;user-select:none;-webkit-tap-highlight-color:transparent;z-index:2}
 .resident img{position:absolute;width:100%;height:100%;object-fit:contain;left:0;top:0;pointer-events:none;transition:opacity .12s}
  .resident .stone,.resident .stone-eyes{opacity:0}
-.resident .stone-eyes{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;transition:opacity .12s}
+.resident .stone{transform:translateY(var(--stone-y, 0%))}
+.resident .stone-eyes{transform:translateY(var(--stone-y, 0%));position:absolute;inset:0;width:100%;height:100%;pointer-events:none;transition:opacity .12s}
 .resident.peeking .stone-eyes{opacity:1}
 .resident .pupils{transition:transform .22s ease}
 .resident.look-left .pupils{transform:translateX(-4px)}
@@ -81,6 +87,8 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 .edit-mode .resident.dragging{cursor:grabbing}
 .edit-mode .resident .alive{opacity:1!important}
 .edit-mode .resident .stone,.edit-mode .resident .stone-eyes{opacity:0!important}
+.edit-mode .resident.preview-stone .alive{opacity:0!important}
+.edit-mode .resident.preview-stone .stone{opacity:1!important}
 .edit-mode #village-foreground{pointer-events:none}
 .editor-hint{font-size:13px;line-height:1.45}
 </style></head><body>
@@ -173,11 +181,12 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 <p class="note">На компьютере наведи глаз на жителя. На телефоне двигай карту пальцем и нажимай на жителей, чтобы увидеть их превращение.</p>
 <section class="editor-panel" id="editor-panel" aria-label="Редактор координат">
   <h2>Расстановка жителей на карте</h2>
-  <p class="editor-hint">Перетаскивай персонажей мышью или пальцем. Изменения видны сразу, но сохраняются в GitHub только после вставки координат в index.html. Все текущие координаты 16 жителей сохранены. Перетаскивание и подбор размеров работают как прежде.</p>
+  <p class="editor-hint">Перетаскивай персонажей мышью или пальцем. Для камня включи «Показать камень» и двигай ползунок «Камень ↕»: плюс опускает камень к ногам, минус поднимает. Его X остаётся в центре персонажа. Изменения видны сразу, но сохраняются в GitHub только после вставки координат в index.html. Все текущие координаты 16 жителей сохранены. Перетаскивание и подбор размеров работают как прежде.</p>
   <div class="editor-row"><label for="edit-person">Житель:</label><select id="edit-person"></select><label for="edit-size">Размер:</label><input id="edit-size" type="range" min="1" max="12" step="0.05"><output id="size-output"></output><button id="edit-reset" type="button">Вернуть начальные</button></div>
+  <div class="editor-row"><label for="edit-stone-y">Камень ↕:</label><input id="edit-stone-y" type="range" min="-70" max="70" step="1" value="0"><output id="stone-y-output"></output><label><input id="edit-preview-stone" type="checkbox"> Показать камень выбранного жителя</label></div>
   <div class="editor-row"><strong id="edit-position"></strong><button id="edit-copy-one" type="button">Копировать выбранного</button><button id="edit-copy-all" type="button">Копировать все координаты</button></div>
   <pre id="edit-css"></pre>
-  <p class="editor-hint">В GitHub вставь скопированные CSS-строки в блок &lt;style&gt; главной страницы, заменив прежние правила #имя. Можно временно подбирать позиции без сохранения: после перезагрузки редактор восстановит их в этом браузере.</p>
+  <p class="editor-hint">В GitHub вставь скопированные CSS-строки в блок &lt;style&gt; главной страницы, заменив прежние правила #имя. Поправка --stone-y тоже копируется и сохраняется. Можно временно подбирать позиции без сохранения: после перезагрузки редактор восстановит их в этом браузере.</p>
 </section>
 <script>
 const scene=document.getElementById('scene'),eye=document.getElementById('eye');
@@ -204,7 +213,18 @@ function setupResident(person){
   // Наведение мыши отменяет этот запуск и оставляет обычное поведение.
   later(restore, Math.floor(Math.random()*1000));
 }
-document.querySelectorAll('.resident').forEach(setupResident);
+// Не запускаем анимации, пока ресурсы сцены ещё загружаются.
+async function revealScene(){
+  const images=[...scene.querySelectorAll('img')];
+  await Promise.all(images.map(img=>{
+    if(img.complete){return img.naturalWidth && img.decode ? img.decode().catch(()=>{}) : Promise.resolve()}
+    return new Promise(resolve=>{img.addEventListener('load',resolve,{once:true});img.addEventListener('error',resolve,{once:true})})
+      .then(()=> img.naturalWidth && img.decode ? img.decode().catch(()=>{}) : undefined);
+  }));
+  scene.classList.add('assets-ready');
+  document.querySelectorAll('.resident').forEach(setupResident);
+}
+revealScene();
 scene.addEventListener('pointermove',e=>{if(e.pointerType==='mouse'){const r=scene.getBoundingClientRect();eye.style.left=(e.clientX-r.left)+'px';eye.style.top=(e.clientY-r.top)+'px'}});
 const viewport=document.getElementById('map-viewport');
 const toggleMap=document.getElementById('toggle-map');
@@ -232,6 +252,9 @@ function initializePositionEditor() {
   const list = [...document.querySelectorAll('.resident')];
   const select = document.getElementById('edit-person');
   const slider = document.getElementById('edit-size');
+  const stoneSlider = document.getElementById('edit-stone-y');
+  const stoneOutput = document.getElementById('stone-y-output');
+  const previewStone = document.getElementById('edit-preview-stone');
   const sizeOutput = document.getElementById('size-output');
   const position = document.getElementById('edit-position');
   const css = document.getElementById('edit-css');
@@ -239,17 +262,18 @@ function initializePositionEditor() {
   const starting = Object.fromEntries(list.map(p => [p.id, {
     left: parseFloat(getComputedStyle(p).left) / scene.clientWidth * 100,
     top: parseFloat(getComputedStyle(p).top) / scene.clientHeight * 100,
-    width: parseFloat(getComputedStyle(p).width) / scene.clientWidth * 100
+    width: parseFloat(getComputedStyle(p).width) / scene.clientWidth * 100,
+    stoneY: parseFloat(getComputedStyle(p).getPropertyValue('--stone-y')) || 0
   }]));
   let saved = {};
   try { saved = JSON.parse(localStorage.getItem(storeKey) || '{}') || {}; } catch(e) {}
   const positions = Object.fromEntries(list.map(p => [p.id, {...starting[p.id], ...(saved[p.id] || {})}]));
   const fmt = n => Number(n).toFixed(2).replace(/\.?0+$/, '');
-  const rule = id => `#${id}{left:${fmt(positions[id].left)}%;top:${fmt(positions[id].top)}%;width:${fmt(positions[id].width)}%}`;
+  const rule = id => `#${id}{left:${fmt(positions[id].left)}%;top:${fmt(positions[id].top)}%;width:${fmt(positions[id].width)}%;--stone-y:${fmt(positions[id].stoneY)}%}`;
   const write = () => { try { localStorage.setItem(storeKey, JSON.stringify(positions)); } catch(e) {} };
   const apply = id => {
     const p = document.getElementById(id), v = positions[id];
-    p.style.left = v.left + '%'; p.style.top = v.top + '%'; p.style.width = v.width + '%';
+    p.style.left = v.left + '%'; p.style.top = v.top + '%'; p.style.width = v.width + '%'; p.style.setProperty('--stone-y', v.stoneY + '%');
   };
   let selected = list[0].id;
   list.forEach(p => {
@@ -261,7 +285,10 @@ function initializePositionEditor() {
   });
   const refresh = () => {
     list.forEach(p => p.classList.toggle('selected', p.id === selected));
+    list.forEach(p=>p.classList.toggle('preview-stone', previewStone.checked && p.id === selected));
     select.value = selected;
+    stoneSlider.value = positions[selected].stoneY;
+    stoneOutput.textContent = fmt(positions[selected].stoneY) + '%';
     slider.value = positions[selected].width;
     sizeOutput.textContent = fmt(positions[selected].width) + '%';
     position.textContent = `X: ${fmt(positions[selected].left)}% · Y: ${fmt(positions[selected].top)}%`;
@@ -269,6 +296,8 @@ function initializePositionEditor() {
   };
   const choose = id => { selected = id; refresh(); };
   select.addEventListener('change', () => choose(select.value));
+  previewStone.addEventListener('change', refresh);
+  stoneSlider.addEventListener('input', () => {positions[selected].stoneY=Number(stoneSlider.value);previewStone.checked=true;apply(selected);write();refresh();});
   slider.addEventListener('input', () => {
     positions[selected].width = Number(slider.value);
     apply(selected); write(); refresh();
