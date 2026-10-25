@@ -73,13 +73,13 @@ header{padding:20px 12px 4px}h1{margin:0;font-size:clamp(30px,5vw,48px)}p{margin
 .topbar .buy-link{margin-left:auto;color:#ffebc4;background:linear-gradient(#84522d,#58331d);border:3px ridge #b98b52;box-shadow:2px 3px 3px #60422580;padding:9px 16px}
 @media(max-width:700px){
   .topbar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:0;row-gap:2px;padding:8px 12px 12px;justify-items:stretch}
-  .topbar a{display:flex;align-items:center;justify-content:center;min-width:0;margin:0;font-size:14px;padding:9px 4px;text-align:center}
-  .topbar .home-link{grid-column:1 / -1;width:100%;margin:0;font-size:19px;padding:10px 4px 12px}
+  .topbar a{display:flex;align-items:center;justify-content:center;min-width:0;margin:0;font-size:clamp(16px,4.9vw,20px);line-height:1.3;min-height:44px;padding:9px 2px;text-align:center}
+  .topbar .home-link{grid-column:1 / -1;grid-row:1;width:100%;margin:0;font-size:clamp(20px,5.7vw,24px);padding:10px 4px 12px}
   .topbar a[href="about.html"]{grid-column:1;grid-row:2}
   .topbar a[href="residents.html"]{grid-column:2;grid-row:2}
-  .topbar a[href="contacts.html"]{grid-column:1;grid-row:3}
+  .topbar a[href="how.html"]{grid-column:1;grid-row:3}
   .topbar a[href="gallery.html"]{grid-column:2;grid-row:3}
-  .topbar a[href="how.html"]{grid-column:1 / -1;grid-row:4;justify-self:center;padding:10px 12px}
+  .topbar a[href="contacts.html"]{grid-column:1 / -1;grid-row:4;justify-self:center;padding:9px 12px}
   .topbar .buy-link{grid-column:1 / -1;grid-row:5;justify-self:center;margin:5px 0 2px;padding:9px 20px}
 }
 
