@@ -17,7 +17,6 @@ const residents = [
   ['015', 'Елисей Перевалов', 'Путешественник', 'elisey', 'Авантюрист'],
   ['016', 'Савелий Уступкин', 'Староста', 'saveliy', 'Дипломат']
 ];
-
 // Читает stories.json — объект вида { "timofey": "stories/timofey.html", ... }
 async function getStories() {
   try {
@@ -36,7 +35,6 @@ const nav = [
   ['Галерея', 'gallery.html'],
   ['Контакты', 'contacts.html']
 ];
-
 // Оболочка: шапка с навигацией и подвал
 function renderShell() {
   const page = location.pathname.split('/').pop();
@@ -49,7 +47,6 @@ function renderShell() {
       .join('') +
     '<a class="buy" href="buy.html">Где купить?</a>' +
     '</nav>';
-
   document.querySelector('footer').textContent =
     'Галькино — маленькая деревня больших историй';
 }
@@ -57,14 +54,16 @@ function renderShell() {
 // Сетка карточек жителей
 async function renderResidents() {
   const links = await getStories();
-
-  document.getElementById('residents').innerHTML = residents
+  const holder = document.getElementById('residents');
+  holder.innerHTML = residents
     .map(([n, name, job, id, archetype]) => {
       const url = links[id];
       return `<article class="tile">
-        <img src="${'residents/' + id + '_portrait.png'}"
-             alt="${name}"
-             onerror="this.style.display='none'">
+        <div class="resident-photo">
+          <img src="${'residents/' + id + '_portrait.png'}"
+               alt="${name}"
+               loading="lazy" decoding="async">
+        </div>
         <h2>${name}</h2>
         <p>${job} · № ${n}</p>
         ${archetype ? `<p>Архетип: ${archetype}</p>` : ""}
@@ -74,8 +73,44 @@ async function renderResidents() {
       </article>`;
     })
     .join('');
-}
 
+  // У каждого портрета собственный индикатор загрузки.
+  holder.querySelectorAll('.resident-photo').forEach(photo => {
+    const img = photo.querySelector('img');
+    let settled = false;
+
+    function showPortrait() {
+      if (settled) return;
+      settled = true;
+      // Ждём декодирования: так не появится резкий пустой прямоугольник.
+      const decoded = typeof img.decode === 'function'
+        ? img.decode().catch(() => {})
+        : Promise.resolve();
+      decoded.then(() => {
+        // Два кадра дают браузеру отрисовать исходное состояние перед переходом.
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          photo.classList.add('is-loaded');
+        }));
+      });
+    }
+
+    function hideBrokenPortrait() {
+      if (settled) return;
+      settled = true;
+      // При ошибке не оставляем бесконечно крутящийся индикатор.
+      photo.remove();
+    }
+
+    img.addEventListener('load', showPortrait, {once: true});
+    img.addEventListener('error', hideBrokenPortrait, {once: true});
+
+    // Изображение из кеша может загрузиться ещё до назначения обработчиков.
+    if (img.complete) {
+      if (img.naturalWidth > 0) showPortrait();
+      else hideBrokenPortrait();
+    }
+  });
+}
 // Иллюстрации перечисляются в gallery.json. GitHub Pages не умеет
 // автоматически получать список файлов из папки gallery.
 async function renderGallery() {
@@ -92,7 +127,6 @@ async function renderGallery() {
     holder.innerHTML = '<p class="muted">Галерея пока пуста. Добавь изображения в папку gallery и их имена в gallery.json.</p>';
     return;
   }
-
   if (!manifest.length) {
     holder.innerHTML = '<p class="muted">Галерея пока пуста. Добавь изображения в папку gallery и их имена в gallery.json.</p>';
     return;
@@ -103,7 +137,6 @@ async function renderGallery() {
   const enlarged = document.getElementById('large');
   const close = document.getElementById('close-gallery');
   let previousFocus = null;
-
   function closeImage() {
     overlay.classList.remove('open');
     overlay.setAttribute('aria-hidden', 'true');
@@ -111,7 +144,6 @@ async function renderGallery() {
     document.body.classList.remove('gallery-lightbox-open');
     if (previousFocus) previousFocus.focus();
   }
-
   for (const item of manifest) {
     // Удобный формат: ["gallery/first.png", "gallery/second.jpg"]
     // Старый формат {"file":"gallery/first.png","title":"..."} тоже работает.
@@ -140,7 +172,6 @@ async function renderGallery() {
     });
     holder.append(button);
   }
-
   close.addEventListener('click', closeImage);
   overlay.addEventListener('click', event => { if (event.target === overlay) closeImage(); });
   document.addEventListener('keydown', event => {
@@ -156,7 +187,6 @@ async function renderGallery() {
 // Запуск после загрузки страницы
 document.addEventListener('DOMContentLoaded', () => {
   renderShell();
-
   if (document.getElementById('residents')) renderResidents();
   if (document.getElementById('gallery')) renderGallery();
 
