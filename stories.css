@@ -176,8 +176,19 @@ footer { text-align: center; margin-top: 35px; }
 /* Продолжение истории и покупка героя */
 
 .story-extra {
-  margin: 35px auto 20px;
+  margin: 42px auto 20px;
+  padding-top: 26px;
   text-align: center;
+  position: relative;
+}
+
+.story-extra::before {
+  content: "";
+  display: block;
+  height: 1px;
+  max-width: 720px;
+  margin: 0 auto 26px;
+  background: linear-gradient(to right, transparent, var(--line), transparent);
 }
 
 .story-extra-buy {
