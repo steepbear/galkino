@@ -172,3 +172,112 @@ footer { text-align: center; margin-top: 35px; }
 @media (prefers-reduced-motion: no-preference) {
   html { scroll-behavior: smooth; }
 }
+
+/* Продолжение истории и покупка героя */
+
+.story-extra {
+  margin: 35px auto 20px;
+  text-align: center;
+}
+
+.story-extra-buy {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  padding: 24px;
+  margin-bottom: 30px;
+  background: #f6ead0;
+  border: 1px solid #d8b985;
+  border-radius: 18px;
+}
+
+.story-extra-buy img {
+  width: 140px;
+  height: 150px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.story-extra-buy-info {
+  flex: 1;
+}
+
+.story-extra h2 {
+  color: #513c2c;
+  font-size: 1.45rem;
+  line-height: 1.3;
+  margin: 0 0 12px;
+}
+
+.story-extra p {
+  color: #7a5b40;
+  line-height: 1.6;
+  margin: 0 0 18px;
+}
+
+.story-extra-button {
+  display: inline-block;
+  padding: 14px 25px;
+  background: #765039;
+  color: #fffaf0;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.story-extra-button:hover,
+.story-extra-button:focus-visible {
+  background: #56351d;
+}
+
+.story-extra-more {
+  padding: 25px 0;
+  border-top: 1px solid #d8b985;
+}
+
+.story-extra-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.story-extra-links a {
+  padding: 10px 15px;
+  background: #f6ead0;
+  border: 1px solid #d8b985;
+  border-radius: 22px;
+  color: #765039;
+  text-decoration: none;
+  font-size: .95rem;
+  transition: background .2s;
+}
+
+.story-extra-links a:hover,
+.story-extra-links a:focus-visible {
+  background: #ead4a9;
+}
+
+@media (max-width: 600px) {
+  .story-extra-buy {
+    flex-direction: column;
+    padding: 20px 15px;
+  }
+
+  .story-extra-buy img {
+    width: 120px;
+    height: 130px;
+  }
+
+  .story-extra-links a {
+    font-size: .88rem;
+    padding: 9px 12px;
+  }
+
+  .story-extra-button {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
