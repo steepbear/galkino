@@ -21,7 +21,7 @@
 
   // Ссылки на товары, добавляем по мере публикации
   const marketLinks = {
-    // timofey: "https://example.com/product"
+    timofey: "https://www.wildberries.ru/catalog/2266782238/detail.aspx"
   };
 
   const id = location.pathname
