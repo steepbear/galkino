@@ -152,78 +152,223 @@
   #residents .resident-photo::after { animation: none; }
 }
 
-
-/* Где купить: первая реальная площадка, в общем стиле Галькино. */
-.buy-page .intro{max-width:820px}
-.buy-page .marketplace-card{
-  display:grid;
-  grid-template-columns:116px minmax(0,1fr);
-  gap:26px;
-  align-items:center;
-  margin:0 auto 28px;
-  padding:30px;
-  background:#f9e8c8;
-  border:2px solid #bd9561;
-  border-radius:14px;
-  box-shadow:4px 5px 0 #bc925e70;
+/* Лавка Галькино. Отдельные правила только для раздела «Где купить». */
+.shop-page{
+  max-width:1130px;
+  padding:38px 43px 43px;
+  border-radius:16px;
 }
-.buy-page .marketplace-mark{
-  width:106px;
-  height:106px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:#70411e;
-  color:#fff1d4;
-  border:3px ridge #b78a51;
-  border-radius:24px;
-  font:bold 34px Georgia,serif;
-  letter-spacing:-2px;
-}
-.buy-page .marketplace-label{
-  margin:0 0 4px;
-  color:#80603d;
+.shop-heading{text-align:center;margin-bottom:32px}
+.shop-heading .shop-overline{
+  margin:0 0 7px;
+  color:#986a39;
   font-size:15px;
   font-weight:bold;
-  letter-spacing:.04em;
+  letter-spacing:.16em;
+  text-transform:uppercase;
 }
-.buy-page .marketplace-content h2{
-  margin:0 0 8px;
-  text-align:left;
+.shop-heading h1{
+  font-size:clamp(37px,5vw,55px);
+  line-height:1.15;
+  margin:0 0 16px;
 }
-.buy-page .marketplace-content>p:not(.marketplace-label){
-  margin:0 0 22px;
+.shop-heading>p:last-child{
+  max-width:750px;
+  margin:0 auto;
+  font-size:18px;
+  line-height:1.6;
 }
-.buy-page .marketplace-button{
-  display:inline-block;
-  padding:12px 22px;
-  border:3px ridge #b98b52;
-  border-radius:9px;
-  background:#69401f;
-  color:#fff5d8;
+.shop-hero{
+  display:grid;
+  grid-template-columns:minmax(0,42%) minmax(0,58%);
+  overflow:hidden;
+  background:#f9e9ca;
+  border:2px solid #b78a51;
+  border-radius:16px;
+  box-shadow:5px 7px 0 #94632f30,0 7px 24px #55321420;
+}
+.shop-hero-portrait{
+  min-width:0;
+  min-height:470px;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:55px 22px 22px;
+  background:radial-gradient(ellipse at 50% 37%,#f8e8c7 0%,#e7c38c 75%);
+  border-right:2px solid #c49a66;
+}
+.shop-hero-portrait:after{
+  content:"";
+  position:absolute;
+  inset:15px;
+  border:1px solid #a97d4966;
+  border-radius:10px;
+  pointer-events:none;
+}
+.shop-hero-portrait img{
+  width:100%;
+  max-width:335px;
+  height:345px;
+  object-fit:contain;
+  filter:drop-shadow(0 10px 6px #56351d26);
+  position:relative;
+  z-index:1;
+}
+.shop-stamp{
+  position:absolute;
+  top:25px;
+  left:25px;
+  z-index:2;
+  padding:7px 12px;
+  border:1px solid #a77a47;
+  border-radius:4px;
+  color:#6f411e;
+  background:#f5deaf;
+  font:bold 13px Georgia,serif;
+  letter-spacing:.03em;
+  transform:rotate(-5deg);
+}
+.shop-hero-number{
+  position:relative;
+  z-index:1;
+  margin:18px 0 0;
+  color:#784b29;
   font-weight:bold;
+  font-size:18px;
+  letter-spacing:.09em;
+}
+.shop-hero-info{padding:34px 36px 30px}
+.shop-kicker{
+  color:#936438;
+  font:bold 13px Georgia,serif;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.shop-hero-info h2{
+  text-align:left;
+  margin:12px 0 10px;
+  font-size:clamp(32px,3.6vw,43px);
+  line-height:1.12;
+}
+.shop-traits{
+  display:inline-block;
+  margin:0 0 21px;
+  padding:5px 11px;
+  color:#654123;
+  background:#ead1a6;
+  border-radius:6px;
+  font-size:15px;
+}
+.shop-storyline{margin:0 0 24px;line-height:1.55}
+.shop-package{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  margin-bottom:24px;
+}
+.shop-package span{
+  border:1px solid #cba579;
+  border-radius:18px;
+  padding:5px 10px;
+  background:#f3dfbc;
+  color:#6c492b;
+  font-size:13px;
+  white-space:nowrap;
+}
+.shop-purchase{
+  border-top:1px solid #cfad7b;
+  padding-top:21px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:14px;
+}
+.shop-purchase-place{display:flex;align-items:center;gap:11px;color:#684a30;font-size:14px;line-height:1.3}
+.shop-wb-mark{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:43px;
+  height:43px;
+  border-radius:12px;
+  background:#70411e;
+  color:#fff5db;
+  font:bold 17px Georgia,serif;
+}
+.shop-buy-button{
+  display:inline-block;
+  width:100%;
+  text-align:center;
+  padding:13px 19px;
+  border:3px ridge #bd8f51;
+  border-radius:9px;
+  background:linear-gradient(#8b552c,#623819);
+  color:#fff3d8;
   text-decoration:none;
-  box-shadow:2px 3px 3px #60422580;
+  font:bold 17px Georgia,serif;
+  box-shadow:2px 3px 3px #60422565;
   transition:background .2s ease,transform .2s ease;
 }
-.buy-page .marketplace-button:hover{
-  background:#85552e;
-  transform:translateY(-1px);
-}
-.buy-page .buy-discover{
-  padding:22px 26px;
-  text-align:center;
-  border:1px solid #c6a373;
+.shop-buy-button:hover{background:#9b6336;transform:translateY(-1px)}
+.shop-story-link{color:#74421d;font-size:15px;font-weight:bold;text-underline-offset:3px}
+.shop-village{
+  display:grid;
+  grid-template-columns:55px minmax(0,1fr) auto;
+  gap:19px;
+  align-items:center;
+  margin-top:27px;
+  padding:25px 26px;
+  background:#eacb94;
+  border:1px solid #c39a65;
   border-radius:12px;
-  background:#efcf99;
 }
-.buy-page .buy-discover h2{margin:0 0 8px}
-.buy-page .buy-discover p{max-width:710px;margin:0 auto 14px}
-.buy-page .buy-discover a{color:#643817;font-weight:bold}
+.shop-village-symbol{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  border:2px solid #ad7e48;
+  color:#79461f;
+  font-size:29px;
+}
+.shop-village h2{text-align:left;margin:0 0 6px;font-size:24px;line-height:1.24}
+.shop-village p{margin:0;color:#68472b;font-size:16px;line-height:1.5}
+.shop-village>a{
+  display:inline-block;
+  padding:9px 13px;
+  border:1px solid #aa7943;
+  border-radius:8px;
+  color:#5d351c;
+  background:#f6dfb5;
+  font:bold 14px Georgia,serif;
+  text-decoration:none;
+  white-space:nowrap;
+}
+.shop-village>a:hover{background:#fcebc9}
+@media(max-width:850px){
+  .shop-page{padding:27px 22px}
+  .shop-hero-info{padding:28px 24px}
+  .shop-hero-portrait{min-height:450px;padding-left:14px;padding-right:14px}
+  .shop-village{grid-template-columns:46px minmax(0,1fr)}
+  .shop-village>a{grid-column:2;justify-self:start}
+}
 @media(max-width:650px){
-  .buy-page .marketplace-card{grid-template-columns:1fr;justify-items:center;text-align:center;gap:12px;padding:20px 16px}
-  .buy-page .marketplace-mark{width:78px;height:78px;border-radius:18px;font-size:27px}
-  .buy-page .marketplace-content h2{text-align:center}
-  .buy-page .marketplace-button{width:100%;font-size:16px;padding:12px}
-  .buy-page .buy-discover{padding:20px 15px}
+  .shop-page{padding:22px 15px}
+  .shop-heading{margin-bottom:22px}
+  .shop-heading>p:last-child{font-size:16px}
+  .shop-hero{grid-template-columns:1fr}
+  .shop-hero-portrait{min-height:315px;padding:42px 20px 16px;border-right:0;border-bottom:2px solid #c49a66}
+  .shop-hero-portrait img{height:245px;max-width:270px}
+  .shop-stamp{top:18px;left:19px}
+  .shop-hero-number{margin:5px 0 0;font-size:16px}
+  .shop-hero-info{padding:24px 19px}
+  .shop-hero-info h2{font-size:34px}
+  .shop-village{grid-template-columns:1fr;gap:10px;padding:20px}
+  .shop-village-symbol{width:41px;height:41px;font-size:24px}
+  .shop-village>a{grid-column:1;white-space:normal}
 }
+@media(prefers-reduced-motion:reduce){.shop-buy-button{transition:none}}
