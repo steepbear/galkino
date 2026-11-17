@@ -21,7 +21,22 @@
 
   // Ссылки на товары, добавляем по мере публикации
   const marketLinks = {
-    timofey: "https://www.wildberries.ru/catalog/2266782238/detail.aspx"
+    timofey: "https://www.wildberries.ru/catalog/2266782238/detail.aspx",
+    marfa: "https://www.wildberries.ru/catalog/2280748005/detail.aspx",
+    prokhor: "https://www.wildberries.ru/catalog/2280747996/detail.aspx?targetUrl=GP",
+    anfisa: "https://www.wildberries.ru/catalog/2280748001/detail.aspx",
+    egor: "https://www.wildberries.ru/catalog/2280747997/detail.aspx?targetUrl=GP",
+    stepan: "https://www.wildberries.ru/catalog/2280748002/detail.aspx",
+    vasilisa: "https://www.wildberries.ru/catalog/2280748006/detail.aspx?targetUrl=GP",
+    luka: "https://www.wildberries.ru/catalog/2280747998/detail.aspx",
+    darya: "https://www.wildberries.ru/catalog/2280747999/detail.aspx?targetUrl=GP",
+    foma: "https://www.wildberries.ru/catalog/2280748000/detail.aspx?targetUrl=GP",
+    kuzma: "https://www.wildberries.ru/catalog/2280747993/detail.aspx?targetUrl=GP",
+    miron: "https://www.wildberries.ru/catalog/2280748003/detail.aspx",
+    nikifor: "https://www.wildberries.ru/catalog/2280748007/detail.aspx?targetUrl=GP",
+    taisiya: "https://www.wildberries.ru/catalog/2280747994/detail.aspx?targetUrl=GP",
+    elisey: "https://www.wildberries.ru/catalog/2280748004/detail.aspx",
+    saveliy: "https://www.wildberries.ru/catalog/2280747995/detail.aspx?targetUrl=GP"
   };
 
   const id = location.pathname
